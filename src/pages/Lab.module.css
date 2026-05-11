@@ -107,6 +107,7 @@
   display: block;
   overflow: hidden;
   margin-bottom: var(--space-2);
+  border-radius: 16px;
 }
 
 .cardImg {

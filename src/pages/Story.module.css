@@ -193,6 +193,7 @@
 
 .founderImg {
   overflow: hidden;
+  border-radius: 16px;
 }
 .founderImg img {
   width: 100%;

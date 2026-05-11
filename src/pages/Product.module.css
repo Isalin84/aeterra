@@ -31,6 +31,7 @@
 .mainImg, .lifeImg {
   overflow: hidden;
   background: var(--color-champagne);
+  border-radius: 16px;
 }
 
 .mainImg img, .lifeImg img {

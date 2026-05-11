@@ -65,7 +65,18 @@
   border: none;
   cursor: pointer;
   transition: background var(--transition-base);
+  position: relative;
+  overflow: hidden;
 }
+.startBtn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.13), transparent);
+  transition: left 0.55s var(--ease-luxury);
+  pointer-events: none;
+}
+.startBtn:hover::before { left: 150%; }
 .startBtn:hover { background: var(--color-ink); }
 
 /* Вопрос */
@@ -170,7 +181,18 @@
   border: none;
   cursor: pointer;
   transition: background var(--transition-base);
+  position: relative;
+  overflow: hidden;
 }
+.nextBtn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.13), transparent);
+  transition: left 0.55s var(--ease-luxury);
+  pointer-events: none;
+}
+.nextBtn:hover:not(:disabled)::before { left: 150%; }
 .nextBtn:hover:not(:disabled) { background: var(--color-ink); }
 .nextBtn:disabled { opacity: 0.35; cursor: not-allowed; }
 
@@ -239,6 +261,7 @@
 .resultImg {
   background: var(--color-champagne);
   overflow: hidden;
+  border-radius: 16px;
 }
 .resultImg img {
   width: 100%;
@@ -288,7 +311,18 @@
   text-transform: uppercase;
   border-radius: var(--radius-pill);
   transition: background var(--transition-base);
+  position: relative;
+  overflow: hidden;
 }
+.shopBtn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.13), transparent);
+  transition: left 0.55s var(--ease-luxury);
+  pointer-events: none;
+}
+.shopBtn:hover::before { left: 150%; }
 .shopBtn:hover { background: var(--color-ink); }
 
 .retryBtn {
