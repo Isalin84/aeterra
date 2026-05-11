@@ -8,6 +8,7 @@ export default function HeroSection() {
       <video
         className={styles.video}
         src="/assets_web/video/aeterra_hero_video.mp4"
+        poster="/assets_web/backgrounds/aeterra_bg_hero.webp"
         autoPlay
         muted
         loop

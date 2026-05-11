@@ -3,6 +3,19 @@
   padding-bottom: var(--space-8);
 }
 
+.heroImg {
+  overflow: hidden;
+  margin-bottom: var(--space-6);
+  margin-top: calc(var(--space-5) * -1);
+}
+
+.heroImg img {
+  width: 100%;
+  aspect-ratio: 21/9;
+  object-fit: cover;
+  display: block;
+}
+
 .breadcrumb {
   display: flex;
   gap: var(--space-2);

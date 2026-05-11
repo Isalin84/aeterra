@@ -117,6 +117,12 @@ export default function Advisor() {
 
   return (
     <div className={styles.page}>
+      <video
+        className={styles.bgVideo}
+        autoPlay muted loop playsInline
+        src="/assets_web/video/aeterra_video_advisor_intro.mp4"
+      />
+      <div className={styles.bgOverlay} />
       <div className={`container ${styles.inner}`}>
         <AnimatePresence mode="wait">
           {step === -1 && (

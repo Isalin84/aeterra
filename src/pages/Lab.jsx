@@ -7,6 +7,12 @@ export default function Lab() {
   return (
     <div className={styles.page}>
       <div className={styles.hero}>
+        <video
+          className={styles.heroVideo}
+          autoPlay muted loop playsInline
+          src="/assets_web/video/aeterra_video_lab_science.mp4"
+        />
+        <div className={styles.heroOverlay} />
         <div className="container">
           <motion.span
             className={styles.eyebrow}
@@ -43,6 +49,11 @@ export default function Lab() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.1, ease: [0.25, 0.1, 0.25, 1] }}
             >
+              {article.image && (
+                <Link to={`/lab/${article.slug}`} className={styles.cardImgWrap}>
+                  <img src={article.image} alt={article.title} className={styles.cardImg} />
+                </Link>
+              )}
               <span className={styles.tag}>{article.tag}</span>
               <h2 className={styles.cardTitle}>
                 <Link to={`/lab/${article.slug}`}>{article.title}</Link>

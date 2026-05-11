@@ -18,6 +18,17 @@ export default function LabArticle() {
           <span>{article.tag}</span>
         </div>
 
+        {article.image && (
+          <motion.div
+            className={styles.heroImg}
+            initial={{ opacity: 0, scale: 1.04 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
+          >
+            <img src={article.image} alt={article.title} />
+          </motion.div>
+        )}
+
         <motion.header
           className={styles.header}
           initial={{ opacity: 0, y: 24 }}

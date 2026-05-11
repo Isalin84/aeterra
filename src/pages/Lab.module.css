@@ -4,8 +4,29 @@
 }
 
 .hero {
+  position: relative;
   padding: var(--space-8) 0 var(--space-7);
   border-bottom: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.heroVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(44, 62, 46, 0.72);
+}
+
+.hero .container {
+  position: relative;
+  z-index: 1;
 }
 
 .eyebrow {
@@ -21,7 +42,7 @@
   font-family: var(--font-serif);
   font-size: var(--text-4xl);
   font-weight: 300;
-  color: var(--color-ink);
+  color: var(--color-marble);
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight);
 }
@@ -29,10 +50,11 @@
 .sub {
   margin-top: var(--space-2);
   font-size: var(--text-md);
-  color: var(--color-ink-muted);
+  color: rgba(249, 249, 249, 0.75);
   font-weight: 300;
 }
 
+/* Article grid */
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -56,6 +78,25 @@
 .card:nth-child(even) {
   padding-left: var(--space-6);
   padding-right: 0;
+}
+
+/* Article cover image */
+.cardImgWrap {
+  display: block;
+  overflow: hidden;
+  margin-bottom: var(--space-2);
+}
+
+.cardImg {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+  display: block;
+}
+
+.cardImgWrap:hover .cardImg {
+  transform: scale(1.04);
 }
 
 .tag {

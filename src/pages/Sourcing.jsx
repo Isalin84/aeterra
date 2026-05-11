@@ -56,7 +56,13 @@ export default function Sourcing() {
   return (
     <div className={styles.page}>
       <div className={styles.hero}>
-        <div className="container">
+        <video
+          className={styles.heroVideo}
+          autoPlay muted loop playsInline
+          src="/assets_web/video/aeterra_video_map_sourcing.mp4"
+        />
+        <div className={styles.heroOverlay} />
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <motion.span
             className={styles.eyebrow}
             initial={{ opacity: 0 }} animate={{ opacity: 1 }}
@@ -65,14 +71,14 @@ export default function Sourcing() {
             Поставки
           </motion.span>
           <motion.h1
-            className={styles.title}
+            className={`${styles.title} ${styles.titleLight}`}
             initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
           >
             Откуда мы берём
           </motion.h1>
           <motion.p
-            className={styles.sub}
+            className={`${styles.sub} ${styles.subLight}`}
             initial={{ opacity: 0 }} animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.5 }}
           >

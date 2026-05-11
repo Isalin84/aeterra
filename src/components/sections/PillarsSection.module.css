@@ -1,5 +1,23 @@
 .section {
+  position: relative;
   padding: var(--space-section) 0;
+  overflow: hidden;
+}
+
+.section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/assets_web/backgrounds/aeterra_bg_marble.webp');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.section > * {
+  position: relative;
+  z-index: 1;
 }
 
 .grid {
