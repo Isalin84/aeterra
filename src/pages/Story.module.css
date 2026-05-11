@@ -1,0 +1,200 @@
+.page {
+  padding-top: 72px;
+  padding-bottom: var(--space-8);
+}
+
+.hero {
+  padding: var(--space-8) 0 var(--space-7);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.eyebrow {
+  display: block;
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: var(--space-2);
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: var(--text-4xl);
+  font-weight: 300;
+  color: var(--color-ink);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  max-width: 640px;
+}
+
+.sub {
+  margin-top: var(--space-3);
+  font-size: var(--text-lg);
+  color: var(--color-ink-muted);
+  font-style: italic;
+  font-family: var(--font-serif);
+}
+
+.intro {
+  max-width: 720px;
+  padding: var(--space-7) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.intro p {
+  font-size: var(--text-base);
+  color: var(--color-ink-soft);
+  line-height: var(--leading-relaxed);
+}
+
+/* Таймлайн */
+.timeline {
+  padding: var(--space-5) 0 var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-left: 1px solid var(--color-border);
+  margin-left: 80px;
+}
+
+.timelineItem {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: var(--space-4);
+  margin-left: -80px;
+  padding: var(--space-4) 0 var(--space-4) calc(80px + var(--space-4));
+  position: relative;
+}
+
+.timelineYear {
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  color: var(--color-border);
+  font-weight: 300;
+  line-height: 1;
+  text-align: right;
+  padding-top: 6px;
+  letter-spacing: var(--tracking-tight);
+}
+
+.timelineBody {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.timelineItem:last-child .timelineBody {
+  border-bottom: none;
+}
+
+.timelineDot {
+  position: absolute;
+  left: calc(-80px - var(--space-4) - 4px);
+  top: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  border: 2px solid var(--color-marble);
+}
+
+.timelineTitle {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  color: var(--color-ink);
+}
+
+.timelineText {
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+  line-height: var(--leading-relaxed);
+  max-width: 640px;
+}
+
+/* Основатели */
+.founders {
+  padding-top: var(--space-7);
+  border-top: 1px solid var(--color-border);
+}
+
+.foundersTitle {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: 300;
+  color: var(--color-ink);
+  margin-bottom: var(--space-6);
+}
+
+.foundersGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+}
+
+.founder {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.founderImg {
+  overflow: hidden;
+}
+.founderImg img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+}
+
+.founderInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-top: var(--space-2);
+}
+
+.founderRole {
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.founderName {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  color: var(--color-ink);
+}
+
+.founderBio {
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+  line-height: var(--leading-relaxed);
+}
+
+@media (max-width: 1024px) {
+  .foundersGrid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .title { font-size: var(--text-3xl); }
+  .timeline { margin-left: 48px; }
+  .timelineItem { grid-template-columns: 60px 1fr; margin-left: -48px; padding-left: calc(48px + var(--space-3)); }
+  .timelineYear { font-size: var(--text-xl); }
+  .founder { grid-template-columns: 120px 1fr; }
+}
+
+@media (max-width: 480px) {
+  .founder { grid-template-columns: 1fr; }
+  .timeline { margin-left: 0; border-left: none; }
+  .timelineItem { grid-template-columns: 1fr; margin-left: 0; padding-left: 0; }
+  .timelineDot { display: none; }
+}

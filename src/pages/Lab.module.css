@@ -1,0 +1,116 @@
+.page {
+  padding-top: 72px;
+  padding-bottom: var(--space-8);
+}
+
+.hero {
+  padding: var(--space-8) 0 var(--space-7);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.eyebrow {
+  display: block;
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: var(--space-2);
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: var(--text-4xl);
+  font-weight: 300;
+  color: var(--color-ink);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
+.sub {
+  margin-top: var(--space-2);
+  font-size: var(--text-md);
+  color: var(--color-ink-muted);
+  font-weight: 300;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  padding: var(--space-6) 0;
+}
+
+.card {
+  padding: var(--space-6) var(--space-5) var(--space-6) 0;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.card:nth-child(odd) {
+  padding-right: var(--space-6);
+  border-right: 1px solid var(--color-border);
+}
+
+.card:nth-child(even) {
+  padding-left: var(--space-6);
+  padding-right: 0;
+}
+
+.tag {
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.cardTitle {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  line-height: var(--leading-tight);
+}
+
+.cardTitle a {
+  color: var(--color-ink);
+  transition: color var(--transition-base);
+}
+.cardTitle a:hover { color: var(--color-moss); }
+
+.lead {
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+  line-height: var(--leading-relaxed);
+  flex: 1;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-2);
+}
+
+.readTime {
+  font-size: var(--text-xs);
+  color: var(--color-ink-muted);
+  letter-spacing: var(--tracking-wide);
+}
+
+.readLink {
+  font-size: var(--text-sm);
+  color: var(--color-moss);
+  transition: opacity var(--transition-base);
+  letter-spacing: var(--tracking-wide);
+}
+.readLink:hover { opacity: 0.7; }
+
+@media (max-width: 768px) {
+  .grid { grid-template-columns: 1fr; }
+  .card, .card:nth-child(odd), .card:nth-child(even) {
+    padding: var(--space-5) 0;
+    border-right: none;
+  }
+  .title { font-size: var(--text-3xl); }
+}

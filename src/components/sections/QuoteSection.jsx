@@ -1,0 +1,24 @@
+import { motion } from 'framer-motion'
+import styles from './QuoteSection.module.css'
+
+export default function QuoteSection() {
+  return (
+    <section className={styles.section}>
+      <div className={styles.bg} />
+      <div className={`container ${styles.content}`}>
+        <motion.blockquote
+          className={styles.quote}
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.9, ease: [0.25, 0.1, 0.25, 1] }}
+        >
+          <p className={styles.text}>
+            «Природа уже создала идеальные механизмы регенерации. Наша задача — понять их, а не заменить синтетикой.»
+          </p>
+          <footer className={styles.author}>— Анна, сооснователь AETERRA</footer>
+        </motion.blockquote>
+      </div>
+    </section>
+  )
+}

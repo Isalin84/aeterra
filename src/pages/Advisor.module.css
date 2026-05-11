@@ -1,0 +1,312 @@
+.page {
+  padding-top: 72px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.inner {
+  padding-top: var(--space-7);
+  padding-bottom: var(--space-8);
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Вступление */
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 560px;
+  gap: var(--space-3);
+}
+
+.avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: var(--space-2);
+}
+
+.eyebrow {
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  font-weight: 300;
+  color: var(--color-ink);
+  line-height: var(--leading-tight);
+}
+
+.sub {
+  font-size: var(--text-base);
+  color: var(--color-ink-soft);
+  line-height: var(--leading-relaxed);
+}
+
+.startBtn {
+  margin-top: var(--space-3);
+  padding: 1rem 3rem;
+  background: var(--color-moss);
+  color: var(--color-marble);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-base);
+}
+.startBtn:hover { background: var(--color-ink); }
+
+/* Вопрос */
+.question {
+  max-width: 640px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.progressBar {
+  flex: 1;
+  height: 2px;
+  background: var(--color-border);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--color-gold);
+  border-radius: 1px;
+}
+
+.progressLabel {
+  font-size: var(--text-xs);
+  color: var(--color-ink-muted);
+  letter-spacing: var(--tracking-wide);
+  white-space: nowrap;
+}
+
+.questionText {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: 300;
+  color: var(--color-ink);
+  line-height: var(--leading-tight);
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  color: var(--color-ink-soft);
+  text-align: left;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-base);
+}
+.option:hover {
+  border-color: var(--color-ink-soft);
+  color: var(--color-ink);
+}
+
+.optionSelected {
+  border-color: var(--color-moss);
+  color: var(--color-ink);
+  background: rgba(44, 62, 46, 0.04);
+}
+
+.optionDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  flex-shrink: 0;
+  transition: background var(--transition-base);
+}
+.optionSelected .optionDot {
+  background: var(--color-moss);
+  border-color: var(--color-moss);
+}
+
+.nextBtn {
+  align-self: flex-end;
+  padding: 0.875rem 2rem;
+  background: var(--color-moss);
+  color: var(--color-marble);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-base);
+}
+.nextBtn:hover:not(:disabled) { background: var(--color-ink); }
+.nextBtn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* Загрузка */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.loadingDots {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  display: block;
+}
+
+.loadingText {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-style: italic;
+  color: var(--color-ink-soft);
+}
+
+/* Результат */
+.result {
+  max-width: 900px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.resultTitle {
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  font-weight: 300;
+  color: var(--color-ink);
+}
+
+.resultSub {
+  font-size: var(--text-base);
+  color: var(--color-ink-soft);
+}
+
+.resultGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+}
+
+.resultCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.resultImg {
+  background: var(--color-champagne);
+  overflow: hidden;
+}
+.resultImg img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+}
+
+.resultInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.resultName {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  color: var(--color-ink);
+}
+
+.resultTagline {
+  font-size: var(--text-sm);
+  color: var(--color-ink-soft);
+}
+
+.resultPrice {
+  font-size: var(--text-base);
+  color: var(--color-ink);
+  margin-top: var(--space-1);
+}
+
+.resultActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.shopBtn {
+  padding: 0.875rem 2rem;
+  background: var(--color-moss);
+  color: var(--color-marble);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  transition: background var(--transition-base);
+}
+.shopBtn:hover { background: var(--color-ink); }
+
+.retryBtn {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color var(--transition-base);
+}
+.retryBtn:hover { color: var(--color-ink); }
+
+@media (max-width: 768px) {
+  .resultGrid { grid-template-columns: 1fr 1fr; }
+  .questionText { font-size: var(--text-xl); }
+}
+
+@media (max-width: 480px) {
+  .resultGrid { grid-template-columns: 1fr; }
+}
