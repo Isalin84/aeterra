@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import products from '../data/products.json'
@@ -88,10 +88,24 @@ export default function Advisor() {
   const [step, setStep] = useState(-1) // -1 = intro, 0-4 = questions, 5 = loading, 6 = result
   const [answers, setAnswers] = useState({})
   const [selected, setSelected] = useState(null)
+  const [showCornerVideo, setShowCornerVideo] = useState(false)
+  const [videoEnded, setVideoEnded] = useState(false)
+  const cornerVideoRef = useRef(null)
+  const [cornerMuted, setCornerMuted] = useState(true)
+
+  const toggleCornerSound = () => {
+    if (cornerVideoRef.current) {
+      const m = !cornerMuted
+      cornerVideoRef.current.muted = m
+      setCornerMuted(m)
+    }
+  }
 
   const handleStart = () => {
     setStep(0)
     setSelected(null)
+    setShowCornerVideo(true)
+    setVideoEnded(false)
   }
 
   const handleSelect = (value) => {
@@ -117,12 +131,6 @@ export default function Advisor() {
 
   return (
     <div className={styles.page}>
-      <video
-        className={styles.bgVideo}
-        autoPlay muted loop playsInline
-        src="/assets_web/video/aeterra_video_advisor_intro.mp4"
-      />
-      <div className={styles.bgOverlay} />
       <div className={`container ${styles.inner}`}>
         <AnimatePresence mode="wait">
           {step === -1 && (
@@ -235,6 +243,43 @@ export default function Advisor() {
           )}
         </AnimatePresence>
       </div>
+
+      <AnimatePresence>
+        {showCornerVideo && !videoEnded && (
+          <motion.div
+            className={styles.cornerVideoWrap}
+            initial={{ opacity: 0, scale: 0.85, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.85, y: 20 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+          >
+            <video
+              ref={cornerVideoRef}
+              className={styles.cornerVideo}
+              autoPlay muted playsInline
+              src="/assets_web/video/aeterra_video_advisor_intro.mp4"
+              onEnded={() => setVideoEnded(true)}
+            />
+            <button
+              className={styles.cornerSoundBtn}
+              onClick={toggleCornerSound}
+              aria-label={cornerMuted ? 'Включить звук' : 'Выключить звук'}
+            >
+              {cornerMuted ? (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                  <line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+                </svg>
+              ) : (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                </svg>
+              )}
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

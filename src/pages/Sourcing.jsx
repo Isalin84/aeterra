@@ -1,9 +1,29 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { motion } from 'framer-motion'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import styles from './Sourcing.module.css'
+
+function SoundOffIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <line x1="23" y1="9" x2="17" y2="15"/>
+      <line x1="17" y1="9" x2="23" y2="15"/>
+    </svg>
+  )
+}
+
+function SoundOnIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+    </svg>
+  )
+}
 
 const customIcon = L.divIcon({
   className: '',
@@ -52,16 +72,30 @@ const sources = [
 
 export default function Sourcing() {
   const [active, setActive] = useState(null)
+  const videoRef = useRef(null)
+  const [muted, setMuted] = useState(true)
+
+  const toggleSound = () => {
+    if (videoRef.current) {
+      const newMuted = !muted
+      videoRef.current.muted = newMuted
+      setMuted(newMuted)
+    }
+  }
 
   return (
     <div className={styles.page}>
       <div className={styles.hero}>
         <video
+          ref={videoRef}
           className={styles.heroVideo}
-          autoPlay muted loop playsInline
+          autoPlay muted playsInline
           src="/assets_web/video/aeterra_video_map_sourcing.mp4"
         />
         <div className={styles.heroOverlay} />
+        <button className={styles.soundBtn} onClick={toggleSound} aria-label={muted ? 'Включить звук' : 'Выключить звук'}>
+          {muted ? <SoundOffIcon /> : <SoundOnIcon />}
+        </button>
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <motion.span
             className={styles.eyebrow}

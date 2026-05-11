@@ -32,6 +32,28 @@
   color: rgba(249, 249, 249, 0.75) !important;
 }
 
+.soundBtn {
+  position: absolute;
+  bottom: var(--space-4);
+  right: var(--space-4);
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: var(--color-marble);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--transition-base);
+  backdrop-filter: blur(8px);
+}
+.soundBtn:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
 .eyebrow {
   display: block;
   font-size: var(--text-xs);
