@@ -42,27 +42,18 @@
   position: relative;
 }
 
-.link::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: var(--color-moss);
-  transform: scaleX(0);
-  transition: transform var(--transition-base);
-  transform-origin: left;
-}
-
 .link:hover,
 .active {
   color: var(--color-ink);
 }
 
-.link:hover::after,
-.active::after {
-  transform: scaleX(1);
+.navIndicator {
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--color-gold);
 }
 
 .burger {

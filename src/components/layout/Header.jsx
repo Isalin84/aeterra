@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, LayoutGroup } from 'framer-motion'
 import styles from './Header.module.css'
 
 const navLinks = [
@@ -28,17 +28,30 @@ export default function Header() {
           <img src="/assets_web/brand/aeterra_logo_dark.webp" alt="AETERRA" />
         </Link>
 
-        <nav className={styles.nav}>
-          {navLinks.map(({ to, label }) => (
-            <NavLink
-              key={to}
-              to={to}
-              className={({ isActive }) => `${styles.link} ${isActive ? styles.active : ''}`}
-            >
-              {label}
-            </NavLink>
-          ))}
-        </nav>
+        <LayoutGroup>
+          <nav className={styles.nav}>
+            {navLinks.map(({ to, label }) => (
+              <NavLink
+                key={to}
+                to={to}
+                className={({ isActive }) => `${styles.link} ${isActive ? styles.active : ''}`}
+              >
+                {({ isActive }) => (
+                  <>
+                    {label}
+                    {isActive && (
+                      <motion.span
+                        layoutId="nav-indicator"
+                        className={styles.navIndicator}
+                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                  </>
+                )}
+              </NavLink>
+            ))}
+          </nav>
+        </LayoutGroup>
 
         <button
           className={styles.burger}

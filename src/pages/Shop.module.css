@@ -34,10 +34,14 @@
 
 .filters {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: var(--space-1);
   padding: var(--space-5) 0 var(--space-6);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
+.filters::-webkit-scrollbar { display: none; }
 
 .grid {
   display: grid;
