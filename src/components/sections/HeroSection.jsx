@@ -8,7 +8,6 @@ export default function HeroSection() {
       <video
         className={styles.video}
         src="/assets_web/video/aeterra_hero_video.mp4"
-        poster="/assets_web/backgrounds/aeterra_bg_hero.webp"
         autoPlay
         muted
         loop
@@ -41,8 +40,8 @@ export default function HeroSection() {
           animate={{ clipPath: 'inset(0 0 0% 0)' }}
           transition={{ duration: 0.8, delay: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          Натуральные ингредиенты. Научное обоснование каждого.<br />
-          Никаких компромиссов.
+          Натуральные ингредиенты с научным обоснованием каждого.<br />
+          Без компромиссов.
         </motion.p>
 
         <motion.div

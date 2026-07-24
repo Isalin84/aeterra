@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import ProductCard from '../components/ui/ProductCard'
 import products from '../data/products.json'
+import { categoryLabel } from '../data/categoryLabels'
 import styles from './Product.module.css'
 
 const fadeUp = {
@@ -22,6 +23,12 @@ export default function Product() {
   const { slug } = useParams()
   const product = products.find(p => p.slug === slug)
   const [activeTab, setActiveTab] = useState('description')
+  const [added, setAdded] = useState(false)
+
+  const handleAdd = () => {
+    setAdded(true)
+    setTimeout(() => setAdded(false), 2200)
+  }
 
   if (!product) return <Navigate to="/shop" replace />
 
@@ -66,7 +73,7 @@ export default function Product() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            <span className={styles.category}>{product.category}</span>
+            <span className={styles.category}>{categoryLabel(product.category)}</span>
             <h1 className={styles.name}>{product.name}</h1>
             <p className={styles.tagline}>{product.tagline}</p>
             <div className={styles.meta}>
@@ -78,7 +85,13 @@ export default function Product() {
               <span className={styles.keyIngValue}>{product.keyIngredient}</span>
               <span className={styles.keyIngSource}>— {product.source}</span>
             </div>
-            <button className={styles.addBtn}>Добавить в ритуал</button>
+            <button
+              className={`${styles.addBtn} ${added ? styles.addBtnAdded : ''}`}
+              onClick={handleAdd}
+              aria-live="polite"
+            >
+              {added ? 'Добавлено ✓' : 'Добавить в ритуал'}
+            </button>
             <p className={styles.advisorNote}>
               Не уверены?{' '}
               <Link to="/advisor" className={styles.advisorLink}>Пройдите диагностику →</Link>

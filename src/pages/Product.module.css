@@ -109,7 +109,7 @@
 
 .keyIngSource {
   font-size: var(--text-sm);
-  color: var(--color-gold);
+  color: var(--color-gold-text);
 }
 
 .addBtn {
@@ -122,11 +122,14 @@
   text-transform: uppercase;
   border-radius: var(--radius-pill);
   cursor: pointer;
-  transition: background var(--transition-base);
+  transition: background var(--transition-base), transform var(--duration-fast) var(--ease-out);
   border: none;
   margin-top: var(--space-2);
 }
 .addBtn:hover { background: var(--color-ink); }
+.addBtn:active { transform: translateY(1px); }
+.addBtnAdded,
+.addBtnAdded:hover { background: var(--color-gold); color: var(--color-moss); }
 
 .advisorNote {
   font-size: var(--text-sm);

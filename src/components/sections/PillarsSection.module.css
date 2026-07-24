@@ -45,7 +45,7 @@
 .number {
   font-family: var(--font-serif);
   font-size: var(--text-sm);
-  color: var(--color-gold);
+  color: var(--color-gold-text);
   letter-spacing: var(--tracking-wide);
 }
 

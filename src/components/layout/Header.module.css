@@ -59,8 +59,12 @@
 .burger {
   display: none;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   gap: 5px;
-  padding: 4px;
+  width: 44px;
+  height: 44px;
+  margin-right: -10px; /* компенсация паддинга, чтобы иконка визуально не сдвигалась к краю */
   background: none;
   border: none;
   cursor: pointer;

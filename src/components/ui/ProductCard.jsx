@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { categoryLabel } from '../../data/categoryLabels'
 import styles from './ProductCard.module.css'
 
 export default function ProductCard({ slug, name, tagline, price, cardImage, category, bestseller }) {
@@ -22,7 +23,7 @@ export default function ProductCard({ slug, name, tagline, price, cardImage, cat
         {bestseller && <span className={styles.badge}>Бестселлер</span>}
       </Link>
       <div className={styles.body}>
-        <p className={styles.category}>{category}</p>
+        <p className={styles.category}>{categoryLabel(category)}</p>
         <h3 className={styles.name}>{name}</h3>
         <p className={styles.tagline}>{tagline}</p>
         <div className={styles.footer}>

@@ -14,7 +14,7 @@ export default function QuoteSection() {
           transition={{ duration: 0.9, ease: [0.25, 0.1, 0.25, 1] }}
         >
           <p className={styles.text}>
-            «Природа уже создала идеальные механизмы регенерации. Наша задача — понять их, а не заменить синтетикой.»
+            «Природа уже создала совершенные механизмы регенерации. Наша работа — понять их и усилить.»
           </p>
           <footer className={styles.author}>— Анна, сооснователь AETERRA</footer>
         </motion.blockquote>

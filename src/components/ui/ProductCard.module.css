@@ -95,7 +95,7 @@
 .link {
   font-size: var(--text-sm);
   letter-spacing: var(--tracking-wide);
-  color: var(--color-gold);
+  color: var(--color-gold-text);
   transition: opacity var(--transition-base);
 }
 .link:hover {

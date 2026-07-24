@@ -1,6 +1,9 @@
 .tag {
   display: inline-flex;
-  padding: 0.375rem 1rem;
+  align-items: center;
+  min-height: 40px;
+  padding: 0.5rem 1rem;
+  white-space: nowrap;
   font-family: var(--font-sans);
   font-size: var(--text-xs);
   font-weight: 400;

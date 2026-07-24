@@ -14,7 +14,7 @@ export default function BestsellersSection() {
         <SectionTitle
           label="Выбор экспертов"
           title="Бестселлеры"
-          subtitle="Четыре формулы, которые доказали свою эффективность"
+          subtitle="Четыре формулы, к которым возвращаются чаще всего"
         />
 
         <div className={styles.grid}>

@@ -3,14 +3,8 @@ import { motion } from 'framer-motion'
 import ProductCard from '../components/ui/ProductCard'
 import Tag from '../components/ui/Tag'
 import products from '../data/products.json'
+import { categories, categoryLabels } from '../data/categoryLabels'
 import styles from './Shop.module.css'
-
-const categories = ['Все', 'serum', 'toner', 'oil', 'cleanser', 'cream', 'eye', 'lip', 'mask', 'essence', 'fluid', 'ampoule', 'body']
-const categoryLabels = {
-  'Все': 'Все', serum: 'Сыворотки', toner: 'Тоники', oil: 'Масла',
-  cleanser: 'Умывание', cream: 'Кремы', eye: 'Глаза', lip: 'Губы',
-  mask: 'Маски', essence: 'Эссенции', fluid: 'Флюиды', ampoule: 'Ампулы', body: 'Тело',
-}
 
 export default function Shop() {
   const [activeCategory, setActiveCategory] = useState('Все')
@@ -60,24 +54,36 @@ export default function Shop() {
           ))}
         </div>
 
-        <motion.div
-          className={styles.grid}
-          key={activeCategory}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4 }}
-        >
-          {filtered.map((product, i) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: i * 0.07, ease: [0.25, 0.1, 0.25, 1] }}
-            >
-              <ProductCard {...product} />
-            </motion.div>
-          ))}
-        </motion.div>
+        {filtered.length === 0 ? (
+          <motion.p
+            className={styles.empty}
+            key={`empty-${activeCategory}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+          >
+            В этой категории пока нет средств.
+          </motion.p>
+        ) : (
+          <motion.div
+            className={styles.grid}
+            key={activeCategory}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+          >
+            {filtered.map((product, i) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.07, ease: [0.25, 0.1, 0.25, 1] }}
+              >
+                <ProductCard {...product} />
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
       </div>
     </div>
   )

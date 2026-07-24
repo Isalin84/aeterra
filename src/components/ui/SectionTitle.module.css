@@ -13,7 +13,7 @@
   font-weight: 400;
   letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-gold-text);
   margin-bottom: var(--space-2);
 }
 
@@ -30,7 +30,7 @@
 }
 
 .light .label {
-  color: var(--color-gold);
+  color: var(--color-gold-text);
 }
 
 .subtitle {

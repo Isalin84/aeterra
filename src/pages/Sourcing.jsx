@@ -25,11 +25,12 @@ function SoundOnIcon() {
   )
 }
 
+// 40px прозрачная зона клика вокруг видимой 12px точки — tap-таргет ≥44px по факту
 const customIcon = L.divIcon({
   className: '',
-  html: `<div style="width:12px;height:12px;background:#D4AF37;border-radius:50%;border:2px solid #F9F9F9;box-shadow:0 0 0 1px #D4AF37"></div>`,
-  iconSize: [12, 12],
-  iconAnchor: [6, 6],
+  html: `<div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center"><div style="width:12px;height:12px;background:#D4AF37;border-radius:50%;border:2px solid #F9F9F9;box-shadow:0 0 0 1px #D4AF37"></div></div>`,
+  iconSize: [40, 40],
+  iconAnchor: [20, 20],
 })
 
 const sources = [
@@ -127,9 +128,11 @@ export default function Sourcing() {
           zoom={2}
           className={styles.map}
           zoomControl={false}
-          attributionControl={false}
         >
-          <TileLayer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png" />
+          <TileLayer
+            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          />
           {sources.map(s => (
             <Marker
               key={s.id}
@@ -159,6 +162,9 @@ export default function Sourcing() {
               <img src={active.image} alt={active.label} />
             </div>
             <div className={styles.detailInfo}>
+              <button className={styles.backBtn} onClick={() => setActive(null)}>
+                ← Все регионы
+              </button>
               <span className={styles.detailRegion}>{active.label}</span>
               <h2 className={styles.detailIngredient}>{active.ingredient}</h2>
               <p className={styles.detailText}>{active.text}</p>

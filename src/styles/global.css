@@ -32,6 +32,23 @@ a {
   text-decoration: none;
 }
 
+/* Доступность: единый бренд-focus для клавиатуры */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-moss);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+/* На тёмных секциях кольцо золотом — .theme-dark переопределяет moss на светлый,
+   поэтому фокус на тёмном фоне задаём явно золотым */
+.theme-dark a:focus-visible,
+.theme-dark button:focus-visible {
+  outline-color: var(--color-gold);
+}
+
 img, video {
   max-width: 100%;
   display: block;
@@ -74,4 +91,17 @@ ul, ol {
 ::-webkit-scrollbar-thumb {
   background: var(--color-border);
   border-radius: 2px;
+}
+
+/* Доступность: уважение к prefers-reduced-motion.
+   Framer Motion гасится через <MotionConfig reducedMotion="user"> в App.jsx;
+   здесь обнуляем CSS-переходы, CSS-анимации и smooth-scroll. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

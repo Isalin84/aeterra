@@ -29,7 +29,7 @@ export default function AIAdvisorWidget() {
               </div>
             </div>
             <p className={styles.panelText}>
-              Привет. Я помогу подобрать ваш ритуал ухода — честно и без лишнего.
+              Привет. Помогу собрать ритуал ухода под вашу кожу — коротко и по делу.
             </p>
             <Link
               to="/advisor"

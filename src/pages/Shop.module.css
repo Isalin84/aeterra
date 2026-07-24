@@ -12,7 +12,7 @@
   font-size: var(--text-xs);
   letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
-  color: var(--color-gold);
+  color: var(--color-gold-text);
   margin-bottom: var(--space-2);
 }
 
@@ -40,8 +40,18 @@
   overflow-x: auto;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
+  /* edge-fade: подсказывает, что строка фильтров прокручивается */
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent);
+  mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent);
 }
 .filters::-webkit-scrollbar { display: none; }
+
+.empty {
+  padding: var(--space-6) 0 var(--space-8);
+  font-size: var(--text-md);
+  font-weight: 300;
+  color: var(--color-ink-muted);
+}
 
 .grid {
   display: grid;

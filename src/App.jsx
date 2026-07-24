@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { MotionConfig } from 'framer-motion'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import AIAdvisorWidget from './components/layout/AIAdvisorWidget'
@@ -18,6 +19,7 @@ import Knowledge from './pages/InnerCompass/Knowledge'
 export default function App() {
   return (
     <BrowserRouter>
+      <MotionConfig reducedMotion="user">
       <Header />
       <main>
         <Routes>
@@ -37,6 +39,7 @@ export default function App() {
       </main>
       <Footer />
       <AIAdvisorWidget />
+      </MotionConfig>
     </BrowserRouter>
   )
 }

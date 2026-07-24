@@ -142,7 +142,7 @@ export default function Advisor() {
               <span className={styles.eyebrow}>AI Advisor</span>
               <h1 className={styles.title}>Ваш персональный ритуал</h1>
               <p className={styles.sub}>
-                5 вопросов — и я составлю ритуал ухода, который подходит именно вашей коже. Без лишнего. Только то, что нужно.
+                5 вопросов — и я соберу ритуал ухода под вашу кожу. Только то, что ей действительно нужно.
               </p>
               <button className={styles.startBtn} onClick={handleStart}>
                 Начать
