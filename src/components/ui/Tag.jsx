@@ -6,6 +6,9 @@ export default function Tag({ children, active, onClick }) {
       type="button"
       className={`${styles.tag} ${active ? styles.active : ''}`}
       onClick={onClick}
+      /* Выбранная категория отличалась только цветом рамки — для скринридера
+         все кнопки звучали одинаково. aria-pressed сообщает состояние. */
+      aria-pressed={active}
     >
       {children}
     </button>

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import PageHero from '../../components/ui/PageHero'
 import styles from './InnerCompass.module.css'
 
 const courses = [
@@ -20,23 +21,22 @@ const fadeUp = {
 export default function Knowledge() {
   return (
     <div className={styles.innerPage}>
+      <PageHero
+        variant="dark"
+        eyebrow="База знаний"
+        title="Учимся вместе"
+        sub="Пять программ для команды — от химии состава до сложных диалогов с клиентом."
+        image="/assets_web/compass/aeterra_compass_knowledge.webp"
+        breadcrumb={
+          <>
+            <Link to="/inner-compass">Inner Compass</Link>
+            <span>/</span>
+            <span>База знаний</span>
+          </>
+        }
+      />
+
       <div className="container">
-        <div className={styles.breadcrumb}>
-          <Link to="/inner-compass">Inner Compass</Link>
-          <span>/</span>
-          <span>База знаний</span>
-        </div>
-
-        <motion.div
-          className={styles.innerHero}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <span className={styles.eyebrow}>База знаний</span>
-          <h1 className={styles.innerTitle}>Учимся вместе</h1>
-        </motion.div>
-
         <div className={styles.courses}>
           {courses.map((c, i) => (
             <motion.div
@@ -45,9 +45,11 @@ export default function Knowledge() {
               {...fadeUp}
               transition={{ duration: 0.6, delay: i * 0.08 }}
             >
-              <span className={styles.courseNum}>Курс {c.num}</span>
-              <h2 className={styles.courseTitle}>{c.title}</h2>
-              <p className={styles.ruleText}>{c.desc}</p>
+              <span className={styles.courseNum} aria-hidden="true">{c.num}</span>
+              <span className={styles.courseBody}>
+                <h2 className={styles.courseTitle}>{c.title}</h2>
+                <p className={styles.courseDesc}>{c.desc}</p>
+              </span>
               <span className={styles.courseBadge}>Скоро</span>
             </motion.div>
           ))}

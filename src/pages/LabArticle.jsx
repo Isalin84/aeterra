@@ -25,7 +25,7 @@ export default function LabArticle() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
           >
-            <img src={article.image} alt={article.title} />
+            <img src={article.image} alt={article.title} loading="lazy" decoding="async" />
           </motion.div>
         )}
 

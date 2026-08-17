@@ -55,14 +55,14 @@ export default function Product() {
               initial={{ opacity: 0 }} animate={{ opacity: 1 }}
               transition={{ duration: 0.8 }}
             >
-              <img src={`/${product.cardImage}`} alt={product.name} />
+              <img src={`/${product.cardImage}`} alt={product.name} loading="lazy" decoding="async" />
             </motion.div>
             <motion.div
               className={styles.lifeImg}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.15 }}
             >
-              <img src={`/${product.lifeImage}`} alt={`${product.name} lifestyle`} />
+              <img src={`/${product.lifeImage}`} alt={`${product.name} lifestyle`} loading="lazy" decoding="async" />
             </motion.div>
           </div>
 
@@ -123,8 +123,10 @@ export default function Product() {
             </motion.p>
           )}
 
+          {/* tableWrap: три столбца состава не сжимаются ниже своей min-content
+              ширины, и без обёртки таблица уводила бы по горизонтали всю страницу */}
           {activeTab === 'ingredients' && (
-            <motion.div {...fadeUp}>
+            <motion.div className={styles.tableWrap} {...fadeUp}>
               <table className={styles.table}>
                 <thead>
                   <tr>
@@ -150,7 +152,7 @@ export default function Product() {
             <motion.div className={styles.whyGrid} {...fadeUp}>
               {icons.map(({ src, label }) => (
                 <div key={label} className={styles.whyItem}>
-                  <img src={src} alt={label} className={styles.whyIcon} />
+                  <img src={src} alt={label} className={styles.whyIcon} loading="lazy" decoding="async" />
                   <span className={styles.whyLabel}>{label}</span>
                 </div>
               ))}

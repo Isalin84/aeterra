@@ -1,5 +1,5 @@
 .page {
-  padding-top: calc(72px + var(--space-5));
+  padding-top: var(--page-top);
   padding-bottom: var(--space-8);
 }
 
@@ -17,34 +17,46 @@
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-8);
-  margin-bottom: var(--space-8);
+  grid-template-columns: 1.08fr 1fr;
+  gap: var(--space-7);
+  /* start, а не растягивание: контейнеры изображений тянулись до высоты
+     правой колонки (577px), а сами изображения оставались 352px — под каждым
+     висела пустая полоса грунта шампани на 225px */
+  align-items: start;
+  margin-bottom: var(--space-7);
 }
 
+/* Медиа-колонка: снимок товара сверху, кадр в интерьере под ним.
+   Раньше оба стояли в ряд по половине колонки и были втрое мельче нужного. */
 .images {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-direction: column;
   gap: var(--space-2);
 }
 
 .mainImg, .lifeImg {
   overflow: hidden;
   background: var(--color-champagne);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
 }
 
 .mainImg img, .lifeImg img {
   width: 100%;
-  aspect-ratio: 3/4;
   object-fit: cover;
 }
 
+/* Пропорции по родным размерам ассетов: карточка товара 1254×1254,
+   кадр в интерьере 1536×1024 — так ничего не обрезается */
+.mainImg img { aspect-ratio: 1 / 1; }
+.lifeImg img { aspect-ratio: 3 / 2; }
+
+/* Панель с ценой и составом остаётся на месте, пока прокручиваются снимки */
 .info {
+  position: sticky;
+  top: calc(var(--header-h) + var(--space-4));
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  padding: var(--space-3) 0;
 }
 
 .category {
@@ -57,7 +69,7 @@
 .name {
   font-family: var(--font-serif);
   font-size: var(--text-3xl);
-  font-weight: 300;
+  font-weight: var(--weight-display);
   color: var(--color-ink);
   line-height: var(--leading-tight);
 }
@@ -65,7 +77,7 @@
 .tagline {
   font-size: var(--text-base);
   color: var(--color-ink-soft);
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .meta {
@@ -178,10 +190,16 @@
 }
 
 /* Таблица ингредиентов */
+.tableWrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: var(--space-6);
+}
+
 .table {
   width: 100%;
+  min-width: 34rem;   /* три столбца ниже этой ширины нечитаемы */
   border-collapse: collapse;
-  margin-bottom: var(--space-6);
 }
 
 .table th {
@@ -256,7 +274,7 @@
 .relatedTitle {
   font-family: var(--font-serif);
   font-size: var(--text-2xl);
-  font-weight: 300;
+  font-weight: var(--weight-heading);
   color: var(--color-ink);
   margin-bottom: var(--space-5);
 }
@@ -269,12 +287,16 @@
 
 @media (max-width: 1024px) {
   .grid { grid-template-columns: 1fr; }
-  .images { grid-template-columns: 1fr 1fr; }
+  /* В одну колонку снимки встают рядом, иначе страница уходит в бесконечную
+     вертикаль ещё до цены */
+  .images { flex-direction: row; }
+  .images > * { flex: 1; min-width: 0; }
+  .info { position: static; }
   .whyGrid { gap: var(--space-5); }
 }
 
 @media (max-width: 768px) {
-  .images { grid-template-columns: 1fr; }
+  .images { flex-direction: column; }
   .lifeImg { display: none; }
   .relatedGrid { grid-template-columns: 1fr 1fr; }
 }

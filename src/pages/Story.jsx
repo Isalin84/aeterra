@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react'
 import { motion } from 'framer-motion'
+import PageHero from '../components/ui/PageHero'
 import styles from './Story.module.css'
 
 const fadeUp = {
@@ -33,76 +33,19 @@ const founders = [
   },
 ]
 
-function SoundOffIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-      <line x1="23" y1="9" x2="17" y2="15"/>
-      <line x1="17" y1="9" x2="23" y2="15"/>
-    </svg>
-  )
-}
-
-function SoundOnIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-    </svg>
-  )
-}
-
 export default function Story() {
-  const videoRef = useRef(null)
-  const [muted, setMuted] = useState(true)
-
-  const toggleSound = () => {
-    if (videoRef.current) {
-      const newMuted = !muted
-      videoRef.current.muted = newMuted
-      setMuted(newMuted)
-    }
-  }
-
   return (
     <div className={styles.page}>
-      {/* Hero */}
-      <div className={styles.hero}>
-        <video
-          ref={videoRef}
-          className={styles.heroVideo}
-          autoPlay muted playsInline
-          src="/assets_web/video/aeterra_video_founders_story.mp4"
-        />
-        <div className={styles.heroOverlay} />
-        <button className={styles.soundBtn} onClick={toggleSound} aria-label={muted ? 'Включить звук' : 'Выключить звук'}>
-          {muted ? <SoundOffIcon /> : <SoundOnIcon />}
-        </button>
-        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-          <motion.span
-            className={styles.eyebrow}
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            История бренда
-          </motion.span>
-          <motion.h1
-            className={`${styles.title} ${styles.titleLight}`}
-            initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-          >
-            Как это было на самом деле
-          </motion.h1>
-          <motion.p
-            className={`${styles.sub} ${styles.subLight}`}
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            transition={{ duration: 0.7, delay: 0.5 }}
-          >
-            История бренда без ретуши.
-          </motion.p>
-        </div>
-      </div>
+      <PageHero
+        variant="cinematic"
+        eyebrow="История бренда"
+        title="Как это было на самом деле"
+        sub="Без ретуши: два выгоревших биохимика, четыре месяца переделок и один отказ от готовой формулы."
+        video="/assets_web/video/aeterra_video_founders_story.mp4"
+        poster="/assets_web/video/posters/aeterra_video_founders_story.webp"
+        ariaLabel="Основатели AETERRA"
+        sound
+      />
 
       <div className="container">
         {/* Вступление */}
@@ -148,7 +91,7 @@ export default function Story() {
                 transition={{ duration: 0.7, delay: i * 0.15, ease: [0.25, 0.1, 0.25, 1] }}
               >
                 <div className={styles.founderImg}>
-                  <img src={f.img} alt={f.name} />
+                  <img src={f.img} alt={f.name} loading="lazy" decoding="async" />
                 </div>
                 <div className={styles.founderInfo}>
                   <p className={styles.founderRole}>{f.role}</p>

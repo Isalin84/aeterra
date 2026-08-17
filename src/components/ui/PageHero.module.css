@@ -1,0 +1,214 @@
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+}
+
+/* ── Кинематографичный вариант ──────────────────────────────────────
+   Начинается от самого верха окна: видео проходит под хедером, поэтому
+   светлой полосы над кадром больше нет. Отступ сверху равен высоте хедера
+   плюс воздух, чтобы заголовок не подлезал под навигацию. */
+.cinematic {
+  min-height: var(--hero-min-h);
+  padding: calc(var(--header-h) + var(--space-6)) 0 var(--space-6);
+  background: var(--color-moss-deep); /* фолбэк: пока видео грузится, текст на тёмном */
+}
+
+.video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Направленный скрим по тому же рецепту, что и на главной: верхний слой
+   защищает полосу навигации, горизонтальный — колонку текста слева,
+   нижняя виньетка собирает кадр. Кадр видео может оказаться светлым в любой
+   момент, поэтому светлый текст опирается на подложку, а не на удачу. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(16, 24, 18, 0.62) 0%, rgba(16, 24, 18, 0.20) 24%, rgba(16, 24, 18, 0) 44%),
+    linear-gradient(90deg, rgba(16, 24, 18, 0.86) 0%, rgba(16, 24, 18, 0.58) 48%, rgba(16, 24, 18, 0.28) 100%),
+    linear-gradient(0deg, rgba(16, 24, 18, 0.50) 0%, rgba(16, 24, 18, 0) 40%);
+}
+
+/* ── Редакционный вариант ───────────────────────────────────────────
+   Ритм задан токеном --page-top, а не отступом на 8rem: раньше между
+   хедером и заголовком «Коллекция» висело около 270px ничем не занятой полосы. */
+.editorial {
+  padding: var(--page-top) 0 var(--space-5);
+  background: linear-gradient(180deg, var(--color-champagne) 0%, var(--color-bone) 78%, var(--color-marble) 100%);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Зерно бумаги поверх грунта — та же плитка, что и в остальных светлых секциях */
+.editorial::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url('/assets_web/textures/aeterra_grain_tile.webp');
+  background-size: 320px 320px;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+}
+
+/* ── Тёмный вариант: внутренний раздел ──────────────────────────────
+   Гексагональный паттерн бренда на глубоком мху. Отличает Inner Compass
+   от витрины — у внутреннего навигатора команды своя атмосфера. */
+.dark {
+  padding: calc(var(--header-h) + var(--space-6)) 0 var(--space-6);
+  background-color: var(--color-moss-deep);
+}
+
+/* Гексагональный паттерн — грунт по умолчанию. Если у страницы есть свой кадр
+   (.image ниже), он ложится поверх и паттерн не мешает: снимок непрозрачный. */
+.dark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/assets_web/backgrounds/aeterra_bg_dark_hex.webp');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Фоновый снимок раздела */
+.image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  pointer-events: none;
+}
+
+/* Над снимком скрим мягче, чем над видео: кадр известен заранее и не может
+   вдруг оказаться светлым, поэтому плотность нужна только под колонкой текста
+   слева — справа изображение остаётся видимым. */
+.dark .scrim {
+  background:
+    linear-gradient(180deg, rgba(16, 24, 18, 0.55) 0%, rgba(16, 24, 18, 0.18) 26%, rgba(16, 24, 18, 0) 46%),
+    linear-gradient(90deg, rgba(16, 24, 18, 0.82) 0%, rgba(16, 24, 18, 0.46) 46%, rgba(16, 24, 18, 0.12) 100%),
+    linear-gradient(0deg, rgba(16, 24, 18, 0.42) 0%, rgba(16, 24, 18, 0) 38%);
+}
+
+/* На тёмном грунте multiply не даёт ничего — зерно проявляется только screen */
+.dark::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url('/assets_web/textures/aeterra_grain_tile.webp');
+  background-size: 320px 320px;
+  opacity: 0.07;
+  mix-blend-mode: screen;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  /* width: 100% обязателен. .hero — флекс-колонка, и без явной ширины этот
+     элемент сжимался по содержимому, а margin: 0 auto из .container центрировал
+     его по остатку. В результате заголовок шапки стоял на своей вертикали, а
+     текст страницы ниже — на своей: расхождение доходило до 190px. */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* ── Путь по разделу ── */
+.breadcrumb {
+  position: relative;
+  z-index: 1;
+  width: 100%;              /* та же причина, что и у .content выше */
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+.breadcrumb a {
+  transition: color var(--transition-base);
+}
+.breadcrumb a:hover { color: var(--color-ink); }
+
+/* ── Текст ── */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  margin-bottom: var(--space-3);
+}
+
+/* Короткая линейка перед надзаголовком — типографская метка раздела,
+   она же связывает надзаголовок с золотой линией секций ниже */
+.eyebrowRule {
+  display: block;
+  width: 32px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.55;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: var(--text-4xl);
+  font-weight: var(--weight-display);
+  line-height: 1.02;
+  letter-spacing: var(--tracking-tight);
+  max-width: 22ch;
+}
+
+.sub {
+  margin-top: var(--space-3);
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  font-weight: 400;
+  line-height: var(--leading-relaxed);
+  max-width: 46ch;
+}
+
+.extra {
+  width: 100%;
+  margin-top: var(--space-5);
+}
+
+/* Цвета текста зависят от грунта */
+.cinematic .eyebrow { color: var(--color-gold); }
+.cinematic .title   { color: var(--color-marble); text-shadow: 0 2px 28px rgba(16, 24, 18, 0.42); }
+.cinematic .sub     { color: rgba(249, 249, 249, 0.92); text-shadow: 0 1px 14px rgba(16, 24, 18, 0.45); }
+
+.editorial .eyebrow { color: var(--color-gold-text); }
+.editorial .title   { color: var(--color-ink); }
+.editorial .sub     { color: var(--color-ink-soft); }
+
+/* .dark несёт класс theme-dark, поэтому --color-ink* здесь уже светлые */
+.dark .eyebrow { color: var(--color-gold); }
+.dark .title   { color: var(--color-ink); }
+.dark .sub     { color: var(--color-ink-soft); }
+
+@media (max-width: 768px) {
+  .cinematic {
+    min-height: clamp(24rem, 56vh, 32rem);
+    padding: calc(var(--header-h) + var(--space-5)) 0 var(--space-5);
+  }
+  .editorial,
+  .dark { padding: calc(var(--header-h) + var(--space-4)) 0 var(--space-4); }
+  /* Заголовок должен доминировать над абзацем, а не совпадать с ним по кеглю */
+  .title { font-size: clamp(2rem, 8.5vw, 2.75rem); max-width: none; }
+  .sub { font-size: var(--text-base); max-width: 38ch; }
+}

@@ -3,6 +3,7 @@ import { MotionConfig } from 'framer-motion'
 import Header from './components/layout/Header'
 import Footer from './components/layout/Footer'
 import AIAdvisorWidget from './components/layout/AIAdvisorWidget'
+import ScrollToTop from './components/layout/ScrollToTop'
 import Home from './pages/Home'
 import Shop from './pages/Shop'
 import Product from './pages/Product'
@@ -15,13 +16,16 @@ import InnerCompassIndex from './pages/InnerCompass/Index'
 import Manifesto from './pages/InnerCompass/Manifesto'
 import Standards from './pages/InnerCompass/Standards'
 import Knowledge from './pages/InnerCompass/Knowledge'
+import NotFound from './pages/NotFound'
 
 export default function App() {
   return (
     <BrowserRouter>
       <MotionConfig reducedMotion="user">
+      <ScrollToTop />
+      <a href="#content" className="skipLink">К содержимому</a>
       <Header />
-      <main>
+      <main id="content">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/shop" element={<Shop />} />
@@ -35,6 +39,7 @@ export default function App() {
           <Route path="/inner-compass/manifesto" element={<Manifesto />} />
           <Route path="/inner-compass/standards" element={<Standards />} />
           <Route path="/inner-compass/knowledge" element={<Knowledge />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <Footer />

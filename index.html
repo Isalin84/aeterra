@@ -1,10 +1,41 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>aeterra</title>
+
+    <title>AETERRA — Молекулярный минимализм</title>
+    <meta name="description" content="AETERRA — натуральная косметика на стыке нетронутой природы и биотехнологий. Ледниковая вода Исландии, родиола Алтая, аргановое масло Марокко. Составы с научным обоснованием каждого ингредиента." />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#2C3E2E" />
+
+    <!-- Шрифты: preconnect + link вместо @import в CSS.
+         @import заставлял браузер сначала скачать tokens.css и только потом
+         обнаружить запрос к шрифтам — две последовательные задержки до первой буквы. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+    />
+
+    <!-- Постер первого экрана грузим с приоритетом: он виден раньше видео -->
+    <link rel="preload" as="image" href="/assets_web/video/posters/aeterra_hero_video.webp" fetchpriority="high" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="AETERRA" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:title" content="AETERRA — Молекулярный минимализм" />
+    <meta property="og:description" content="Натуральная косметика на стыке нетронутой природы и биотехнологий. Ингредиенты из пяти точек мира, составы с научным обоснованием." />
+    <meta property="og:url" content="https://aeterra.bestpracticeai.ru/" />
+    <meta property="og:image" content="https://aeterra.bestpracticeai.ru/assets_web/video/posters/aeterra_hero_video.webp" />
+    <meta property="og:image:width" content="1600" />
+    <meta property="og:image:height" content="898" />
+    <meta property="og:image:alt" content="AETERRA — капля сыворотки в лабораторном стекле" />
+    <meta name="twitter:card" content="summary_large_image" />
+
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
       (function(m,e,t,r,i,k,a){

@@ -1,130 +1,82 @@
 .page {
-  padding-top: 72px;
   padding-bottom: var(--space-8);
 }
 
-.hero {
-  position: relative;
-  padding: var(--space-8) 0 var(--space-7);
-  border-bottom: 1px solid var(--color-border);
-  overflow: hidden;
-}
-
-.heroVideo {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.heroOverlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(44, 62, 46, 0.72);
-}
-
-.hero .container {
-  position: relative;
-  z-index: 1;
-}
-
-.soundBtn {
-  position: absolute;
-  bottom: var(--space-4);
-  right: var(--space-4);
-  z-index: 2;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  color: var(--color-marble);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background var(--transition-base);
-  backdrop-filter: blur(8px);
-}
-.soundBtn:hover {
-  background: rgba(255, 255, 255, 0.28);
-}
-
-.eyebrow {
-  display: block;
-  font-size: var(--text-xs);
-  letter-spacing: var(--tracking-wider);
-  text-transform: uppercase;
-  color: var(--color-gold);
-  margin-bottom: var(--space-2);
-}
-
-.title {
-  font-family: var(--font-serif);
-  font-size: var(--text-4xl);
-  font-weight: 300;
-  color: var(--color-marble);
-  line-height: var(--leading-tight);
-  letter-spacing: var(--tracking-tight);
-}
-
-.sub {
-  margin-top: var(--space-2);
-  font-size: var(--text-md);
-  color: rgba(249, 249, 249, 0.75);
-  font-weight: 300;
-}
-
-/* Article grid */
+/* ── Сетка статей ────────────────────────────────────────────────────
+   Пять статей в двух равных колонках оставляли пятую сиротой, а у нечётных
+   карточек была правая линейка, упиравшаяся в пустоту. Первая статья теперь
+   идёт разворотом на всю ширину — это и снимает сироту, и даёт странице
+   редакционную иерархию вместо ровного списка одинаковых плиток. */
 .grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0;
-  padding: var(--space-6) 0;
+  column-gap: var(--space-6);
+  padding: var(--space-6) 0 0;
 }
 
 .card {
-  padding: var(--space-6) var(--space-5) var(--space-6) 0;
-  border-bottom: 1px solid var(--color-border);
   display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-6) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Разделительная линейка только между соседями по строке, поэтому
+   рисуем её слева у правой колонки, а не справа у левой */
+.card:nth-child(even) {
+  padding-left: var(--space-6);
+  border-left: 1px solid var(--color-border);
+  margin-left: calc(var(--space-6) * -0.5);
+}
+
+/* Первая статья — разворот: изображение слева, текст справа */
+.card:first-child {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  align-items: center;
+  gap: var(--space-6);
+  padding-top: 0;
+}
+.card:first-child .cardImgWrap { margin-bottom: 0; }
+/* 2xl, а не 3xl: на широком экране 3xl доходит до 56px и заголовок разворота
+   ломался на четыре строки внутри своей колонки */
+.card:first-child .cardTitle { font-size: var(--text-2xl); max-width: 24ch; }
+.card:first-child .lead { font-size: var(--text-base); }
+
+/* Текстовая часть карточки. flex: 1 нужен, чтобы «Читать →» у карточек
+   с разной длиной лида выстраивались по одной линии, а не вразнобой. */
+.body {
+  display: flex;
+  flex: 1;
   flex-direction: column;
   gap: var(--space-2);
 }
 
-.card:nth-child(odd) {
-  padding-right: var(--space-6);
-  border-right: 1px solid var(--color-border);
-}
-
-.card:nth-child(even) {
-  padding-left: var(--space-6);
-  padding-right: 0;
-}
-
-/* Article cover image */
+/* ── Обложка статьи ── */
 .cardImgWrap {
   display: block;
   overflow: hidden;
   margin-bottom: var(--space-2);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
+  background: var(--color-champagne); /* грунт на время загрузки, а не серый провал */
 }
 
 .cardImg {
   width: 100%;
   aspect-ratio: 16/9;
   object-fit: cover;
-  transition: transform 0.6s ease;
   display: block;
+  transition: transform var(--duration-slow) var(--ease-luxury);
 }
 
-.cardImgWrap:hover .cardImg {
-  transform: scale(1.04);
-}
+.cardImgWrap:hover .cardImg { transform: scale(1.04); }
 
 .tag {
   font-size: var(--text-xs);
-  letter-spacing: var(--tracking-wide);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
   color: var(--color-gold-text);
 }
@@ -132,7 +84,7 @@
 .cardTitle {
   font-family: var(--font-serif);
   font-size: var(--text-xl);
-  font-weight: 400;
+  font-weight: var(--weight-heading);
   line-height: var(--leading-tight);
 }
 
@@ -146,6 +98,7 @@
   font-size: var(--text-sm);
   color: var(--color-ink-soft);
   line-height: var(--leading-relaxed);
+  max-width: 56ch;
   flex: 1;
 }
 
@@ -154,27 +107,41 @@
   align-items: center;
   justify-content: space-between;
   margin-top: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
 }
 
 .readTime {
   font-size: var(--text-xs);
   color: var(--color-ink-muted);
   letter-spacing: var(--tracking-wide);
+  font-variant-numeric: tabular-nums;
 }
 
 .readLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-size: var(--text-sm);
   color: var(--color-moss);
-  transition: opacity var(--transition-base);
   letter-spacing: var(--tracking-wide);
+  transition: gap var(--duration-normal) var(--ease-luxury), color var(--transition-base);
 }
-.readLink:hover { opacity: 0.7; }
+.readLink:hover { gap: 0.875rem; color: var(--color-ink); }
+
+@media (max-width: 1024px) {
+  .card:first-child { grid-template-columns: 1fr; gap: var(--space-3); }
+}
 
 @media (max-width: 768px) {
-  .grid { grid-template-columns: 1fr; }
-  .card, .card:nth-child(odd), .card:nth-child(even) {
+  .grid { grid-template-columns: 1fr; padding-top: var(--space-5); }
+  .card,
+  .card:nth-child(even) {
     padding: var(--space-5) 0;
-    border-right: none;
+    border-left: none;
+    padding-left: 0;
+    margin-left: 0;
   }
-  .title { font-size: var(--text-3xl); }
+  .card:first-child { padding-top: 0; }
+  .card:first-child .cardTitle { font-size: var(--text-2xl); }
 }
