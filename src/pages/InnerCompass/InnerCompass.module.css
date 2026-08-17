@@ -64,6 +64,7 @@
 }
 
 .sectionTitle {
+  margin: 0;                 /* h2 приносит собственные отступы браузера */
   font-family: var(--font-serif);
   font-size: var(--text-2xl);
   font-weight: var(--weight-heading);

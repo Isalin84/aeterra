@@ -21,8 +21,10 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap"
     />
 
-    <!-- Постер первого экрана грузим с приоритетом: он виден раньше видео -->
-    <link rel="preload" as="image" href="/assets_web/video/posters/aeterra_hero_video.webp" fetchpriority="high" />
+    <!-- Предзагрузки постера здесь нет намеренно: index.html один на все 13
+         маршрутов, поэтому постер главной качался бы и на /shop, и на /sourcing,
+         где он не нужен — впустую и с предупреждением «preloaded but not used»
+         в консоли. Постер запрашивает сам <video> через атрибут poster. -->
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="AETERRA" />

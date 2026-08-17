@@ -144,38 +144,45 @@ ul, ol {
 
 /* ── Подпись об источнике карты ───────────────────────────────────────
    Убрать её нельзя: OpenStreetMap (ODbL) и CARTO требуют видимой ссылки на
-   источник, это условие использования тайлов. Поэтому не скрываем, а сворачиваем
-   в знак «©» размером с точку — раскрывается по наведению и по фокусу с
-   клавиатуры. Так требование выполнено, а из макета подпись уходит. */
+   источник — это условие использования тайлов. Поэтому делаем её тихой:
+   мелкий кегль, приглушённый цвет, полупрозрачная подложка. */
 .leaflet-control-attribution {
-  max-width: 18px;              /* видно только «©», остальное за краем */
-  overflow: hidden;
-  white-space: nowrap;
   background: rgba(249, 249, 249, 0.72) !important;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   border-radius: var(--radius-pill) 0 0 0;
-  padding: 2px 5px !important;
+  padding: 2px 6px !important;
   font-size: 10px !important;
   line-height: 1.4;
   color: var(--color-ink-muted);
-  transition: max-width var(--duration-slow) var(--ease-luxury);
-}
-
-.leaflet-control-attribution:hover,
-.leaflet-control-attribution:focus-within {
-  max-width: 24rem;
+  white-space: nowrap;
 }
 
 .leaflet-control-attribution a {
   color: var(--color-ink-soft);  /* вместо системного синего */
   text-decoration: none;
 }
-.leaflet-control-attribution a:hover {
+.leaflet-control-attribution a:hover,
+.leaflet-control-attribution a:focus-visible {
   text-decoration: underline;
 }
 
-/* Свёрнутое состояние не должно ездить при уменьшении motion */
+/* Сворачивание в знак «©» — только там, где есть настоящее наведение.
+   На тач-экране ни :hover, ни :focus-within не наступают сами, а ссылки при
+   overflow: hidden обрезаны и не нажимаются: подпись стала бы недостижимой,
+   то есть требование лицензии перестало бы выполняться. */
+@media (hover: hover) and (pointer: fine) {
+  .leaflet-control-attribution {
+    max-width: 20px;            /* видно только «©», остальное за краем */
+    overflow: hidden;
+    transition: max-width var(--duration-slow) var(--ease-luxury);
+  }
+  .leaflet-control-attribution:hover,
+  .leaflet-control-attribution:focus-within {
+    max-width: 24rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .leaflet-control-attribution { transition: none; }
 }

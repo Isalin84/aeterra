@@ -69,7 +69,10 @@ export default function InnerCompassIndex() {
                 />
                 <span className={styles.sectionBody}>
                   <span className={styles.sectionNum} aria-hidden="true">{s.num}</span>
-                  <span className={styles.sectionTitle}>{s.label}</span>
+                  {/* h2, а не span: иначе ниже h1 на странице не остаётся
+                      ни одного заголовка и по разделам нельзя пройти навигацией
+                      по структуре */}
+                  <h2 className={styles.sectionTitle}>{s.label}</h2>
                   <span className={styles.sectionSub}>{s.sub}</span>
                   <span className={styles.sectionNote}>{s.note}</span>
                 </span>

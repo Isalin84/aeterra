@@ -56,6 +56,10 @@ const sources = [
    Амазония слева, Алтай справа. */
 const sourceBounds = L.latLngBounds(sources.map(s => [s.lat, s.lng]))
 
+/* Границы системы координат Web Mercator. За ними плиток не существует,
+   и без этого ограничения Leaflet всё равно их запрашивал. */
+const tileBounds = L.latLngBounds([[-85.05, -180], [85.05, 180]])
+
 /**
  * Подбирает масштаб так, чтобы карта заполняла контейнер по ширине и при этом
  * все пять маркеров оставались в кадре.
@@ -75,7 +79,10 @@ function FitMapToWidth() {
       const { x: width } = map.getSize()
       if (!width) return
       const zoomFillingWidth = Math.log2(width / 256)          // 256px — сторона тайла
-      const zoomFittingSources = map.getBoundsZoom(sourceBounds, false, L.point(48, 88))
+      // Отступ умеренный: чем он больше, тем сильнее ограничение по высоте
+      // прижимает масштаб и тем шире поля по краям. К заданному значению
+      // добавляется ещё половина иконки маркера (40px), это учтено.
+      const zoomFittingSources = map.getBoundsZoom(sourceBounds, false, L.point(40, 44))
       const zoom = Math.min(zoomFillingWidth, zoomFittingSources)
 
       /* Центр берём в проекции, а не через getCenter(). Географическая середина
@@ -132,9 +139,11 @@ export default function Sourcing() {
           <TileLayer
             url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
-            /* Страховка на случай, если масштаб всё же уйдёт ниже подобранного:
-               тайлы не дублируются за пределами ±180° */
+            /* noWrap убирает дубли мира по горизонтали, но сам по себе не мешает
+               запрашивать плитки за пределами системы координат: половина
+               запросов уходила в 404. bounds ограничивает набор плиток. */
             noWrap
+            bounds={tileBounds}
           />
           {sources.map(s => (
             <Marker

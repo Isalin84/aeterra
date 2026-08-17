@@ -43,84 +43,101 @@ export default function Header() {
       }
     }
 
-    const prevOverflow = document.body.style.overflow
+    /* Закрываем прокрутку и на <html>, а не только на <body>: по спецификации
+       overflow с body доходит до вьюпорта лишь пока у корня он visible, и
+       iOS Safari это правило не соблюдает вовсе. */
+    const root = document.documentElement
+    const prev = { root: root.style.overflow, body: document.body.style.overflow }
+    root.style.overflow = 'hidden'
     document.body.style.overflow = 'hidden'
     document.addEventListener('keydown', onKey)
 
     return () => {
-      document.body.style.overflow = prevOverflow
+      root.style.overflow = prev.root
+      document.body.style.overflow = prev.body
       document.removeEventListener('keydown', onKey)
     }
   }, [menuOpen])
 
   return (
-    <header className={`${styles.header} ${atTop ? styles.atTop : ''}`}>
-      <div className={`container ${styles.inner}`}>
-        <Link to="/" className={styles.logo} aria-label="AETERRA — на главную">
-          {/* Один файл на оба состояния: поверх видео логотип выбеливается фильтром.
-              Готовый aeterra_logo_light.webp тут не годится — это квадрат 1254×1254
-              с логотипом на залитом фоне, без прозрачности и с другой обрезкой,
-              поэтому знак не совпал бы по размеру и месту. */}
-          <img
-            src="/assets_web/brand/aeterra_logo_dark.webp"
-            alt="AETERRA"
-            width="934"
-            height="357"
-          />
-        </Link>
-
-        <LayoutGroup>
-          <nav className={styles.nav} aria-label="Основная навигация">
-            {navLinks.map(({ to, label }) => (
-              <NavLink
-                key={to}
-                to={to}
-                className={({ isActive }) => `${styles.link} ${isActive ? styles.active : ''}`}
-              >
-                {({ isActive }) => (
-                  <>
-                    <span className={styles.linkLabel}>{label}</span>
-                    {isActive && (
-                      <motion.span
-                        layoutId="nav-indicator"
-                        className={styles.navIndicator}
-                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                      />
-                    )}
-                  </>
-                )}
-              </NavLink>
-            ))}
-          </nav>
-        </LayoutGroup>
-
-        <button
-          ref={burgerRef}
-          type="button"
-          className={styles.burger}
-          onClick={() => setMenuOpen(v => !v)}
-          aria-label={menuOpen ? 'Закрыть меню' : 'Открыть меню'}
-          aria-expanded={menuOpen}
-          aria-controls="mobile-menu"
-        >
-          <span className={`${styles.bar} ${menuOpen ? styles.barOpen1 : ''}`} />
-          <span className={`${styles.bar} ${menuOpen ? styles.barOpen2 : ''}`} />
-          <span className={`${styles.bar} ${menuOpen ? styles.barOpen3 : ''}`} />
-        </button>
-      </div>
-
+    <>
+      {/* Затемнение страницы вынесено из <header> и стоит его соседом.
+          У хедера есть backdrop-filter, а элемент с фильтром становится
+          контейнером для position: fixed внутри себя — скрим растягивался не по
+          окну, а по полосе хедера с меню (72–405px вместо 72–812px). Ниже него
+          страница оставалась и незатемнённой, и кликабельной: тап мимо меню
+          открывал карточку товара вместо закрытия. */}
       <AnimatePresence>
         {menuOpen && (
-          <>
-            <motion.div
-              className={styles.scrim}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              onClick={() => setMenuOpen(false)}
-              aria-hidden="true"
+          <motion.div
+            className={styles.scrim}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            onClick={() => setMenuOpen(false)}
+            aria-hidden="true"
+          />
+        )}
+      </AnimatePresence>
+
+      <header className={`${styles.header} ${atTop ? styles.atTop : ''}`}>
+        <div className={`container ${styles.inner}`}>
+          <Link to="/" className={styles.logo} aria-label="AETERRA — на главную">
+            {/* Один файл на оба состояния: поверх видео логотип выбеливается фильтром.
+                Готовый aeterra_logo_light.webp тут не годится — это квадрат 1254×1254
+                с логотипом на залитом фоне, без прозрачности и с другой обрезкой,
+                поэтому знак не совпал бы по размеру и месту. */}
+            <img
+              src="/assets_web/brand/aeterra_logo_dark.webp"
+              alt="AETERRA"
+              width="934"
+              height="357"
             />
+          </Link>
+
+          <LayoutGroup>
+            <nav className={styles.nav} aria-label="Основная навигация">
+              {navLinks.map(({ to, label }) => (
+                <NavLink
+                  key={to}
+                  to={to}
+                  className={({ isActive }) => `${styles.link} ${isActive ? styles.active : ''}`}
+                >
+                  {({ isActive }) => (
+                    <>
+                      <span className={styles.linkLabel}>{label}</span>
+                      {isActive && (
+                        <motion.span
+                          layoutId="nav-indicator"
+                          className={styles.navIndicator}
+                          transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                        />
+                      )}
+                    </>
+                  )}
+                </NavLink>
+              ))}
+            </nav>
+          </LayoutGroup>
+
+          <button
+            ref={burgerRef}
+            type="button"
+            className={styles.burger}
+            onClick={() => setMenuOpen(v => !v)}
+            aria-label={menuOpen ? 'Закрыть меню' : 'Открыть меню'}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+          >
+            <span className={`${styles.bar} ${menuOpen ? styles.barOpen1 : ''}`} />
+            <span className={`${styles.bar} ${menuOpen ? styles.barOpen2 : ''}`} />
+            <span className={`${styles.bar} ${menuOpen ? styles.barOpen3 : ''}`} />
+          </button>
+        </div>
+
+        <AnimatePresence>
+          {menuOpen && (
             <motion.div
               id="mobile-menu"
               className={styles.drawer}
@@ -146,9 +163,9 @@ export default function Header() {
                 </motion.div>
               ))}
             </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-    </header>
+          )}
+        </AnimatePresence>
+      </header>
+    </>
   )
 }

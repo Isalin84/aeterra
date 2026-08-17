@@ -30,7 +30,11 @@ export default function ProductCard({ slug, name, tagline, price, cardImage, cat
 
         <span className={styles.body}>
           <span className={styles.category}>{categoryLabel(category)}</span>
-          <span className={styles.name}>{name}</span>
+          {/* h3, а не span: заголовки допустимы внутри ссылки, и переход на span
+              обнулил структуру страницы — в каталоге не осталось ни одного
+              заголовка ниже h1, хотя навигация по ним основной способ обхода
+              списка товаров скринридером */}
+          <h3 className={styles.name}>{name}</h3>
           <span className={styles.tagline}>{tagline}</span>
           <span className={styles.footer}>
             <span className={styles.price}>{price.toLocaleString('ru-RU')} ₽</span>

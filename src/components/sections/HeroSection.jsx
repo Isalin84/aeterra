@@ -9,10 +9,13 @@ export default function HeroSection() {
        в светлый прозрачный вариант. Признак живёт в разметке, а не в списке
        маршрутов внутри хедера, поэтому разъехаться с вёрсткой не может. */
     <section className={styles.hero} data-hero="cinematic">
+      {/* Первый экран — единственное место с повтором: он без звука и должен
+          жить постоянно. Шапки подстраниц играют один раз (см. AmbientVideo). */}
       <AmbientVideo
         className={styles.video}
         src="/assets_web/video/aeterra_hero_video.mp4"
         poster="/assets_web/video/posters/aeterra_hero_video.webp"
+        loop
       />
       <div className={styles.overlay} />
 

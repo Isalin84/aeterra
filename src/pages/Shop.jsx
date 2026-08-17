@@ -39,12 +39,14 @@ export default function Shop() {
 
       <div className="container">
         {/* Счётчик результатов: при выборе категории сетка меняется, и без него
-            непонятно, отфильтровалось ли что-то вообще */}
-        <p className={styles.count} aria-live="polite">
-          {filtered.length === 0
-            ? 'Ничего не найдено'
-            : `${filtered.length} ${filtered.length === 1 ? 'средство' : filtered.length < 5 ? 'средства' : 'средств'}`}
-        </p>
+            непонятно, отфильтровалось ли что-то вообще. При пустом результате
+            счётчик молчит — сообщение об этом даёт блок ниже, иначе на экране
+            оказывались сразу два разных текста об одном и том же. */}
+        {filtered.length > 0 && (
+          <p className={styles.count} aria-live="polite">
+            {filtered.length} {filtered.length === 1 ? 'средство' : filtered.length < 5 ? 'средства' : 'средств'}
+          </p>
+        )}
 
         {filtered.length === 0 ? (
           <motion.p
@@ -53,6 +55,7 @@ export default function Shop() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4 }}
+            aria-live="polite"
           >
             В этой категории пока нет средств.
           </motion.p>

@@ -34,9 +34,13 @@ function SoundOnIcon() {
  * props:
  *   src, poster  — пути от корня public
  *   sound        — показать кнопку включения звука
+ *   loop         — повторять. По умолчанию нет: шапки подстраниц играют один раз
+ *                  и замирают на последнем кадре — это решение коммита d16fbdb
+ *                  («play-once with sound toggle»), и со включённым звуком
+ *                  бесконечный повтор превратился бы в неотключаемый звуковой цикл
  *   className    — класс на <video> (позиционирование задаёт страница)
  */
-export default function AmbientVideo({ src, poster, sound = false, className = '', ariaLabel }) {
+export default function AmbientVideo({ src, poster, sound = false, loop = false, className = '', ariaLabel }) {
   const ref = useRef(null)
   const [muted, setMuted] = useState(true)
 
@@ -59,6 +63,9 @@ export default function AmbientVideo({ src, poster, sound = false, className = '
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
+          // Доигравшее видео не перезапускаем: play() после ended начинает с нуля,
+          // и одноразовая шапка играла бы заново при каждом возврате прокруткой
+          if (video.ended) return
           video.play().catch(() => {}) // автоплей может быть запрещён политикой браузера
         } else if (!video.paused) {
           video.pause()
@@ -90,7 +97,7 @@ export default function AmbientVideo({ src, poster, sound = false, className = '
         preload="metadata"
         autoPlay
         muted
-        loop
+        loop={loop}
         playsInline
         aria-label={ariaLabel}
       />

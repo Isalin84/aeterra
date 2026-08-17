@@ -162,9 +162,13 @@ body:has([data-hero='cinematic']) .atTop {
 .barOpen3 { transform: translateY(-6px) rotate(-45deg); }
 
 /* ── Мобильное меню ── */
+/* Скрим — сосед <header>, а не его потомок: внутри элемента с backdrop-filter
+   position: fixed отсчитывается от этого элемента, а не от окна.
+   z-index на единицу ниже хедера, чтобы панель меню осталась поверх. */
 .scrim {
   position: fixed;
   inset: var(--header-h) 0 0;
+  z-index: calc(var(--z-header) - 1);
   background: rgba(26, 26, 26, 0.32);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
