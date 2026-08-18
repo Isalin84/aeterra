@@ -1,88 +1,16 @@
+/* Шапку рисует PageHero — он же учитывает высоту хедера */
 .page {
-  padding-top: 72px;
   padding-bottom: var(--space-8);
 }
 
-.hero {
-  position: relative;
-  padding: var(--space-8) 0 var(--space-6);
-  border-bottom: 1px solid var(--color-border);
-  overflow: hidden;
-}
-
-.heroVideo {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.heroOverlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(20, 34, 20, 0.70);
-}
-
-.titleLight {
-  color: var(--color-marble) !important;
-}
-
-.subLight {
-  color: rgba(249, 249, 249, 0.75) !important;
-}
-
-.soundBtn {
-  position: absolute;
-  bottom: var(--space-4);
-  right: var(--space-4);
-  z-index: 2;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  color: var(--color-marble);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background var(--transition-base);
-  backdrop-filter: blur(8px);
-}
-.soundBtn:hover {
-  background: rgba(255, 255, 255, 0.28);
-}
-
-.eyebrow {
-  display: block;
-  font-size: var(--text-xs);
-  letter-spacing: var(--tracking-wider);
-  text-transform: uppercase;
-  color: var(--color-gold);
-  margin-bottom: var(--space-2);
-}
-
-.title {
-  font-family: var(--font-serif);
-  font-size: var(--text-4xl);
-  font-weight: 300;
-  color: var(--color-ink);
-  line-height: var(--leading-tight);
-  letter-spacing: var(--tracking-tight);
-}
-
-.sub {
-  margin-top: var(--space-3);
-  font-size: var(--text-base);
-  color: var(--color-ink-soft);
-  font-weight: 300;
-  max-width: 560px;
-  line-height: var(--leading-relaxed);
-}
-
+/* Высота считается от ШИРИНЫ, а не от высоты окна. Масштаб карты ограничен
+   двумя условиями: мир должен перекрыть ширину полосы, а рамка источников —
+   влезть в её высоту. Если высота задана в vh, то на коротком и широком окне
+   (2400×700) второе условие прижимает масштаб, мир перестаёт доставать до краёв
+   и по бокам открывается 877px грунта. Привязка к vw сохраняет пропорцию полосы,
+   при которой оба условия выполнимы на любой ширине. */
 .mapWrap {
-  height: 480px;
+  height: clamp(26rem, 34vw, 40rem);
   width: 100%;
   /* нейтральный фон-фолбэк: если тайлы не загрузились, не будет пустого серого провала */
   background: var(--color-champagne);
@@ -91,6 +19,10 @@
 .map {
   width: 100%;
   height: 100%;
+  /* Грунт под плитками. На коротком и очень широком окне масштаб ограничен
+     высотой, мир не перекрывает всю ширину, и по краям видно фон карты —
+     у Leaflet он по умолчанию #ddd, что читается как незагрузившийся блок. */
+  background: var(--color-champagne);
 }
 
 /* Список источников (до выбора) */
@@ -146,7 +78,7 @@
 
 .detailImg {
   overflow: hidden;
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
 }
 .detailImg img {
   width: 100%;
@@ -185,7 +117,7 @@
 .detailIngredient {
   font-family: var(--font-serif);
   font-size: var(--text-2xl);
-  font-weight: 300;
+  font-weight: var(--weight-heading);
   color: var(--color-ink);
   line-height: var(--leading-tight);
 }

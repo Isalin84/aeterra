@@ -2,8 +2,10 @@ import { motion } from 'framer-motion'
 import styles from './QuoteSection.module.css'
 
 export default function QuoteSection() {
+  // theme-dark переопределяет токены текста и границ под тёмный фон —
+  // класс был описан в tokens.css и до сих пор нигде не применялся
   return (
-    <section className={styles.section}>
+    <section className={`theme-dark ${styles.section}`}>
       <div className={styles.bg} />
       <div className={`container ${styles.content}`}>
         <motion.blockquote

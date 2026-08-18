@@ -1,7 +1,9 @@
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-1);
+  min-height: 48px;              /* тап-таргет */
   padding: 0.875rem 2rem;
   font-family: var(--font-sans);
   font-size: var(--text-sm);
@@ -9,9 +11,18 @@
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
   border-radius: var(--radius-pill);
-  transition: all var(--transition-base);
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base),
+    color var(--transition-base),
+    transform var(--duration-fast) var(--ease-out);
   cursor: pointer;
   white-space: nowrap;
+}
+
+/* Отклик на нажатие: кнопка слегка проседает, как физическая */
+.btn:active {
+  transform: scale(0.985);
 }
 
 .primary {

@@ -27,8 +27,7 @@ export default function Home() {
             <motion.div className={styles.storyImg} {...fadeUp}>
               <img
                 src="/assets_web/founders/aeterra_founders_together.webp"
-                alt="Основатели AETERRA"
-              />
+                alt="Основатели AETERRA" loading="lazy" decoding="async" />
             </motion.div>
             <motion.div
               className={styles.storyText}

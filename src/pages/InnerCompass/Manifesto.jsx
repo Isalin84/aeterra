@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import PageHero from '../../components/ui/PageHero'
 import styles from './InnerCompass.module.css'
 
 const cases = [
@@ -33,23 +34,22 @@ const fadeUp = {
 export default function Manifesto() {
   return (
     <div className={styles.innerPage}>
+      <PageHero
+        variant="dark"
+        eyebrow="Манифест в действии"
+        title="Ценности в реальных ситуациях"
+        sub="Три случая, когда следование принципам стоило нам партии продукта, клиента и четырёх месяцев работы."
+        image="/assets_web/compass/aeterra_compass_manifesto.webp"
+        breadcrumb={
+          <>
+            <Link to="/inner-compass">Inner Compass</Link>
+            <span>/</span>
+            <span>Манифест</span>
+          </>
+        }
+      />
+
       <div className="container">
-        <div className={styles.breadcrumb}>
-          <Link to="/inner-compass">Inner Compass</Link>
-          <span>/</span>
-          <span>Манифест</span>
-        </div>
-
-        <motion.div
-          className={styles.innerHero}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <span className={styles.eyebrow}>Манифест в действии</span>
-          <h1 className={styles.innerTitle}>Ценности в реальных ситуациях</h1>
-        </motion.div>
-
         <div className={styles.cases}>
           {cases.map((c, i) => (
             <motion.div key={i} className={styles.caseCard} {...fadeUp}

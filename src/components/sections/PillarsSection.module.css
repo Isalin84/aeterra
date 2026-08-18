@@ -2,6 +2,7 @@
   position: relative;
   padding: var(--space-section) 0;
   overflow: hidden;
+  background: linear-gradient(180deg, var(--color-marble) 0%, var(--color-bone) 100%);
 }
 
 .section::before {
@@ -14,13 +15,18 @@
   opacity: 0.12;
   pointer-events: none;
 }
+
+/* Зерно настоящей бумаги вместо синтетического шума: даёт физичность поверхности,
+   плитка 512×512 весит 17 КБ и кешируется на все секции сайта */
 .section::after {
   content: '';
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-  opacity: 0.025;
+  background-image: url('/assets_web/textures/aeterra_grain_tile.webp');
+  background-size: 320px 320px;
+  background-repeat: repeat;
+  opacity: 0.05;
   mix-blend-mode: multiply;
 }
 
@@ -29,59 +35,111 @@
   z-index: 1;
 }
 
-.grid {
+/* ── Разворот: заголовок слева, принципы справа ───────────────────── */
+.layout {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(12, 1fr);
   gap: var(--space-6);
+  align-items: start;
 }
 
-.pillar {
+.head {
+  grid-column: 1 / span 4;
+  position: sticky;
+  /* Заголовок не должен уезжать под хедер, пока справа идёт прокрутка */
+  top: calc(var(--header-h) + var(--space-5));
+}
+
+.headNote {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+  line-height: var(--leading-relaxed);
+  max-width: 30ch;
+}
+
+.list {
+  grid-column: 6 / span 7;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+}
+
+/* Общая сетка у всех трёх строк: иконка в фиксированной колонке, текст —
+   в одной и той же второй. Отсюда общий левый край и общая базовая линия. */
+.pillar {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: var(--space-4);
   padding: var(--space-5) 0;
+  align-items: start;
 }
 
-.number {
-  font-family: var(--font-serif);
-  font-size: var(--text-sm);
-  color: var(--color-gold-text);
-  letter-spacing: var(--tracking-wide);
+.pillar + .pillar {
+  border-top: 1px solid var(--color-border);
+}
+.pillar:first-child { padding-top: 0; }
+.pillar:last-child  { padding-bottom: 0; }
+
+.icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  opacity: 0.9;
+  /* Оптическая правка: засечная строка «Чистота» начинается ниже верхнего
+     края блока, и иконка, выровненная по математике, казалась приподнятой */
+  margin-top: 2px;
 }
 
-.divider {
-  width: 32px;
-  height: 1px;
-  background: var(--color-border);
-  margin: var(--space-1) 0;
+.body {
+  display: flex;
+  flex-direction: column;
 }
 
 .pillarTitle {
   font-family: var(--font-sans);
   font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
   letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
-  color: var(--color-ink-muted);
+  color: var(--color-gold-text);
 }
 
 .heading {
   font-family: var(--font-serif);
-  font-size: var(--text-xl);
-  font-weight: 400;
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-heading);
   color: var(--color-ink);
   line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
   margin-top: var(--space-1);
+  text-wrap: balance;
 }
 
 .text {
   font-size: var(--text-sm);
   color: var(--color-ink-soft);
   line-height: var(--leading-relaxed);
-  margin-top: var(--space-1);
+  margin-top: var(--space-2);
+  max-width: 52ch;
 }
 
-@media (max-width: 1024px) {
-  .grid { grid-template-columns: 1fr; gap: var(--space-4); }
-  .pillar { border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-4); }
-  .pillar:last-child { border-bottom: none; }
+/* Планшет: заголовок перестаёт быть колонкой и встаёт над списком */
+@media (max-width: 1199px) {
+  .layout { gap: var(--space-5); }
+  .head {
+    grid-column: 1 / -1;
+    position: static;
+  }
+  .headNote { max-width: 46ch; }
+  .list { grid-column: 1 / -1; }
+}
+
+@media (max-width: 768px) {
+  .pillar {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+    padding: var(--space-4) 0;
+  }
+  .icon { width: 34px; height: 34px; }
+  .text { max-width: none; }
 }

@@ -1,55 +1,37 @@
+/* Отступ сверху больше не нужен: шапку страницы рисует PageHero, а его
+   кинематографичный и редакционный варианты сами учитывают высоту хедера */
 .page {
-  padding-top: 72px;
-}
-
-.hero {
-  padding: var(--space-8) 0 var(--space-6);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.eyebrow {
-  display: block;
-  font-size: var(--text-xs);
-  letter-spacing: var(--tracking-wider);
-  text-transform: uppercase;
-  color: var(--color-gold-text);
-  margin-bottom: var(--space-2);
-}
-
-.title {
-  font-family: var(--font-serif);
-  font-size: var(--text-4xl);
-  font-weight: 300;
-  color: var(--color-ink);
-  line-height: var(--leading-tight);
-  letter-spacing: var(--tracking-tight);
-}
-
-.sub {
-  margin-top: var(--space-2);
-  font-size: var(--text-md);
-  color: var(--color-ink-muted);
-  font-weight: 300;
+  padding-bottom: var(--space-8);
 }
 
 .filters {
   display: flex;
   flex-wrap: nowrap;
   gap: var(--space-1);
-  padding: var(--space-5) 0 var(--space-6);
   overflow-x: auto;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
+  /* Небольшой внутренний отступ, чтобы фокусное кольцо крайней кнопки
+     не срезалось краем прокручиваемой области */
+  padding: 2px;
   /* edge-fade: подсказывает, что строка фильтров прокручивается */
   -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent);
   mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent);
 }
 .filters::-webkit-scrollbar { display: none; }
 
+.count {
+  padding: var(--space-5) 0 var(--space-3);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
 .empty {
   padding: var(--space-6) 0 var(--space-8);
   font-size: var(--text-md);
-  font-weight: 300;
   color: var(--color-ink-muted);
 }
 
@@ -65,5 +47,4 @@
 }
 @media (max-width: 480px) {
   .grid { grid-template-columns: 1fr; }
-  .title { font-size: var(--text-3xl); }
 }

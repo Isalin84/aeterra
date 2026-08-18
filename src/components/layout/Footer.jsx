@@ -18,7 +18,7 @@ export default function Footer() {
           <p className={styles.slogan}>AETERRA — наука быть собой</p>
         </div>
 
-        <nav className={styles.nav}>
+        <nav className={styles.nav} aria-label="Навигация в подвале">
           {links.map(({ to, label }) => (
             <Link key={to} to={to} className={styles.link}>{label}</Link>
           ))}

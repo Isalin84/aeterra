@@ -1,31 +1,45 @@
+/* Базовое состояние — матовое стекло. Оно же и безопасное: если страница
+   не объявила полноэкранный тёмный герой, хедер останется читаемым при любой
+   вёрстке ниже. Раньше базой была прозрачность по списку маршрутов, и на
+   /lab, /story, /sourcing белые ссылки попадали на белый фон. */
 .header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: var(--z-header);
-  background: var(--color-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  transition: box-shadow var(--transition-base);
-}
-
-.scrolled {
-  box-shadow: var(--shadow-xs);
+  background-color: var(--color-glass);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 1px 24px rgba(44, 62, 46, 0.05); /* тень с оттенком мха, не чёрная */
+  transition:
+    background-color var(--duration-slow) var(--ease-luxury),
+    backdrop-filter  var(--duration-slow) var(--ease-luxury),
+    border-color     var(--duration-slow) var(--ease-luxury),
+    box-shadow       var(--duration-slow) var(--ease-luxury);
 }
 
 .inner {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 72px;
+  height: var(--header-h);
 }
 
+/* ── Логотип ── */
+.logo {
+  display: block;
+  flex: none;
+}
 .logo img {
-  height: 32px;
+  height: 30px;
   width: auto;
+  transition: filter var(--duration-slow) var(--ease-luxury);
 }
 
+/* ── Навигация ── */
 .nav {
   display: flex;
   align-items: center;
@@ -33,30 +47,91 @@
 }
 
 .link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: var(--header-h);
   font-family: var(--font-sans);
   font-size: var(--text-sm);
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: var(--tracking-wide);
   color: var(--color-ink-soft);
   transition: color var(--transition-base);
+}
+.link:hover,
+.active { color: var(--color-ink); }
+
+/* Подчёркивание растёт из центра при наведении */
+.linkLabel {
   position: relative;
 }
-
-.link:hover,
-.active {
-  color: var(--color-ink);
+.linkLabel::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.45;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform var(--duration-normal) var(--ease-luxury);
 }
+.link:hover .linkLabel::after { transform: scaleX(1); }
+.active .linkLabel::after { transform: scaleX(0); } /* у активного уже есть золотая линия */
 
 .navIndicator {
   position: absolute;
-  bottom: -4px;
+  bottom: 22px;
   left: 0;
   right: 0;
   height: 1px;
   background: var(--color-gold);
 }
 
+/* ── Состояние поверх кинематографичного героя ──────────────────────
+   Условие берётся из разметки страницы: [data-hero="cinematic"] ставит
+   PageHero (и герой главной). Списка маршрутов больше нет — значит нет и
+   способа его забыть обновить. .atTop приходит из JS: не прокручено и меню
+   закрыто. Оба условия должны совпасть, иначе действует база выше. */
+body:has([data-hero='cinematic']) .atTop {
+  background-color: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom-color: transparent;
+  box-shadow: none;
+
+  /* Скрим сверху: кадр видео может оказаться светлым в любой момент,
+     поэтому светлый текст опирается на собственную подложку, а не на удачу. */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: calc(var(--header-h) * 2);
+    background: linear-gradient(180deg, rgba(16, 24, 18, 0.58) 0%, rgba(16, 24, 18, 0.28) 45%, rgba(16, 24, 18, 0) 100%);
+    pointer-events: none;
+  }
+
+  /* Тот же файл логотипа выбеливается фильтром: brightness(0) делает знак
+     чёрной силуэтной маской, invert(1) — белой. Обрезка и позиция не меняются. */
+  & .logo img {
+    filter: brightness(0) invert(1) drop-shadow(0 1px 10px rgba(26, 26, 26, 0.45));
+  }
+
+  & .link {
+    color: rgba(249, 249, 249, 0.86);
+    text-shadow: 0 1px 12px rgba(16, 24, 18, 0.45);
+  }
+  & .link:hover,
+  & .active { color: var(--color-marble); }
+
+  & .bar { background-color: var(--color-marble); }
+}
+
+/* ── Бургер ── */
 .burger {
+  position: relative;
   display: none;
   flex-direction: column;
   justify-content: center;
@@ -64,7 +139,7 @@
   gap: 5px;
   width: 44px;
   height: 44px;
-  margin-right: -10px; /* компенсация паддинга, чтобы иконка визуально не сдвигалась к краю */
+  margin-right: -10px;
   background: none;
   border: none;
   cursor: pointer;
@@ -74,8 +149,11 @@
   display: block;
   width: 22px;
   height: 1px;
-  background: var(--color-ink);
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  background-color: var(--color-ink);
+  transition:
+    transform var(--duration-normal) var(--ease-luxury),
+    opacity   var(--duration-fast) var(--ease-out),
+    background-color var(--duration-slow) var(--ease-luxury);
   transform-origin: center;
 }
 
@@ -83,28 +161,53 @@
 .barOpen2 { opacity: 0; }
 .barOpen3 { transform: translateY(-6px) rotate(-45deg); }
 
+/* ── Мобильное меню ── */
+/* Скрим — сосед <header>, а не его потомок: внутри элемента с backdrop-filter
+   position: fixed отсчитывается от этого элемента, а не от окна.
+   z-index на единицу ниже хедера, чтобы панель меню осталась поверх. */
+.scrim {
+  position: fixed;
+  inset: var(--header-h) 0 0;
+  z-index: calc(var(--z-header) - 1);
+  background: rgba(26, 26, 26, 0.32);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
 .drawer {
+  position: relative;
   display: none;
   flex-direction: column;
-  padding: var(--space-4) var(--space-4) var(--space-5);
+  padding: var(--space-3) var(--space-4) var(--space-5);
   border-top: 1px solid var(--color-border);
   background: var(--color-glass);
-  backdrop-filter: blur(12px);
-  gap: var(--space-3);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 .drawerLink {
-  font-family: var(--font-sans);
+  display: flex;
+  align-items: center;
+  min-height: 52px;          /* тап-таргет выше рекомендованных 44px */
+  font-family: var(--font-serif);
   font-size: var(--text-lg);
-  font-weight: 300;
+  font-weight: var(--weight-heading);
   color: var(--color-ink-soft);
-  letter-spacing: var(--tracking-wide);
-  transition: color var(--transition-base);
+  letter-spacing: var(--tracking-normal);
+  border-bottom: 1px solid var(--color-border);
+  transition: color var(--transition-base), padding-left var(--duration-normal) var(--ease-luxury);
 }
+.drawerLink:last-of-type { border-bottom: none; }
 
 .drawerLink.active,
 .drawerLink:hover {
   color: var(--color-ink);
+  padding-left: var(--space-1);
+}
+
+.drawerLink.active {
+  border-left: 1px solid var(--color-gold);
+  padding-left: var(--space-2);
 }
 
 @media (max-width: 768px) {

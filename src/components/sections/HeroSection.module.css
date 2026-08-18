@@ -1,12 +1,15 @@
 .hero {
   position: relative;
-  height: 100dvh;
-  min-height: 640px;
+  /* 100dvh занимал экран целиком и ничего не подсказывал о том, что ниже.
+     84vh оставляет кромку следующей секции — приглашение прокрутить. */
+  height: 84dvh;
+  min-height: 34rem;
+  max-height: 54rem;
   display: flex;
   align-items: center;
   overflow: hidden;
   /* тёмный фон-фолбэк: пока видео грузится, текст читается на тёмном, а не на светлом кадре */
-  background: #14201a;
+  background: var(--color-moss-deep);
 }
 
 .video {
@@ -17,14 +20,19 @@
   object-fit: cover;
 }
 
-/* Скрим под текстом: слева темнее (контент прижат влево), плюс общее затемнение —
-   белый заголовок читается даже над светлыми кадрами видео */
+/* Скрим под текстом. Кадр этого видео — светлое стекло с водой, и прежних
+   значений (0.78 слева, 0.20 сверху) не хватало: белый заголовок и ссылки
+   хедера ложились на почти белый фон. Здесь три слоя:
+   — вертикальный сверху защищает полосу навигации на любом кадре;
+   — горизонтальный держит колонку текста, прижатую влево;
+   — виньетка снизу собирает кадр и не даёт краям спорить с CTA. */
 .overlay {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(16, 24, 18, 0.78) 0%, rgba(16, 24, 18, 0.55) 46%, rgba(16, 24, 18, 0.30) 100%),
-    linear-gradient(180deg, rgba(16, 24, 18, 0.20) 0%, rgba(16, 24, 18, 0) 30%, rgba(16, 24, 18, 0.35) 100%);
+    linear-gradient(180deg, rgba(16, 24, 18, 0.62) 0%, rgba(16, 24, 18, 0.18) 22%, rgba(16, 24, 18, 0) 40%),
+    linear-gradient(90deg, rgba(16, 24, 18, 0.88) 0%, rgba(16, 24, 18, 0.62) 46%, rgba(16, 24, 18, 0.30) 100%),
+    linear-gradient(0deg, rgba(16, 24, 18, 0.52) 0%, rgba(16, 24, 18, 0) 42%);
 }
 
 .content {
@@ -71,22 +79,42 @@
 .cta {
   display: inline-flex;
   align-items: center;
-  padding: 1rem 2.5rem;
-  border: 1px solid rgba(249, 249, 249, 0.6);
+  gap: 0.75rem;
+  min-height: 52px;
+  padding: 1rem 2.25rem;
+  border: 1px solid rgba(249, 249, 249, 0.55);
   color: var(--color-marble);
   font-family: var(--font-sans);
   font-size: var(--text-sm);
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: var(--tracking-wider);
   text-transform: uppercase;
   border-radius: var(--radius-pill);
-  transition: all var(--transition-base);
+  /* Лёгкое стекло: кнопка перестаёт быть пустой рамкой на видео и получает
+     собственную плоскость, не перекрывая кадр плашкой */
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  background: rgba(16, 24, 18, 0.18);
   margin-top: var(--space-2);
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base),
+    color var(--transition-base),
+    transform var(--duration-fast) var(--ease-out);
 }
 .cta:hover {
-  background: rgba(249, 249, 249, 0.15);
+  background: var(--color-marble);
   border-color: var(--color-marble);
+  color: var(--color-moss);
 }
+.cta:active { transform: scale(0.985); }
+
+/* Стрелка уезжает вправо на ховере — движение внутри кнопки, а не самой кнопки */
+.ctaArrow {
+  display: block;
+  transition: transform var(--duration-normal) var(--ease-luxury);
+}
+.cta:hover .ctaArrow { transform: translateX(4px); }
 
 .scroll {
   position: absolute;
@@ -107,10 +135,10 @@
 }
 
 @media (max-width: 768px) {
-  .title { font-size: var(--text-3xl); }
+  /* Заголовок должен доминировать: раньше на мобильном он опускался
+     до --text-2xl (22px) и совпадал по размеру с абзацем под ним */
+  .title { font-size: clamp(2rem, 9vw, 2.75rem); }
+  .sub { font-size: var(--text-base); max-width: 34ch; }
   .content { gap: var(--space-3); }
-}
-
-@media (max-width: 480px) {
-  .title { font-size: var(--text-2xl); }
+  .cta { padding: 1rem 2rem; }
 }

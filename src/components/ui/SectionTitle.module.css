@@ -2,6 +2,10 @@
   margin-bottom: var(--space-7);
 }
 
+.flush {
+  margin-bottom: 0;
+}
+
 .center {
   text-align: center;
 }
@@ -20,24 +24,27 @@
 .title {
   font-family: var(--font-serif);
   font-size: var(--text-3xl);
-  font-weight: 300;
+  font-weight: var(--weight-display);
   color: var(--color-ink);
   line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
 }
 
 .light .title {
   color: var(--color-marble);
 }
 
+/* На тёмном грунте нужен яркий --color-gold: здесь стоял --color-gold-text,
+   рассчитанный на светлый фон, и надзаголовок терял контраст */
 .light .label {
-  color: var(--color-gold-text);
+  color: var(--color-gold);
 }
 
 .subtitle {
   margin-top: var(--space-3);
   font-size: var(--text-md);
   color: var(--color-ink-soft);
-  font-weight: 300;
+  font-weight: 400;
   line-height: var(--leading-relaxed);
   max-width: 560px;
 }

@@ -5,26 +5,49 @@
 }
 
 html {
-  font-size: 16px;
+  /* 100%, а не 16px: жёсткое значение перебивало выбранный пользователем
+     размер шрифта в настройках браузера */
+  font-size: 100%;
   -webkit-text-size-adjust: 100%;
   scroll-behavior: smooth;
+  scroll-padding-top: var(--header-h);
 }
 
 body {
   font-family: var(--font-sans);
-  font-weight: 300;
+  /* 400, а не 300: DM Sans Light на 17px по светлому грунту выглядит выцветшим,
+     а не лёгким. Тонкость оставлена дисплейным засечным размерам. */
+  font-weight: 400;
   color: var(--color-ink);
   background-color: var(--color-marble);
   line-height: var(--leading-normal);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'kern' 1, 'liga' 1;
 }
 
 h1, h2, h3, h4 {
   font-family: var(--font-serif);
-  font-weight: 400;
+  font-weight: var(--weight-heading);
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight);
+  /* balance не даёт заголовку оставить одно слово на последней строке */
+  text-wrap: balance;
+  /* Cormorant — переменный шрифт с оптическими размерами: на крупном кегле
+     штрих утончается, на мелком набирает плотность. Без этого крупные
+     заголовки выглядят грубее, чем задумано гарнитурой. */
+  font-optical-sizing: auto;
+}
+
+p {
+  /* pretty убирает висячие предлоги и одиночные слова в конце абзаца */
+  text-wrap: pretty;
+}
+
+/* Выделение текста в цветах бренда, а не системным синим */
+::selection {
+  background: var(--color-champagne);
+  color: var(--color-moss);
 }
 
 a {
@@ -61,14 +84,52 @@ button {
   background: none;
 }
 
+/* Маркеры убраны, но семантика списка сохраняется:
+   Safari с VoiceOver перестаёт объявлять списки при list-style: none,
+   поэтому в разметке у таких списков стоит role="list" */
 ul, ol {
   list-style: none;
+}
+
+/* Ссылка «к содержимому»: не видна, пока не получит фокус с клавиатуры */
+.skipLink {
+  position: fixed;
+  top: var(--space-1);
+  left: var(--space-1);
+  z-index: var(--z-modal);
+  padding: 0.75rem 1.25rem;
+  background: var(--color-moss);
+  color: var(--color-marble);
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wide);
+  border-radius: var(--radius-pill);
+  transform: translateY(calc(-100% - var(--space-2)));
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+.skipLink:focus-visible {
+  transform: translateY(0);
 }
 
 .container {
   max-width: var(--container-max);
   margin: 0 auto;
   padding: 0 var(--container-pad);
+}
+
+/* Слой зерна для светлых секций: плитка настоящей бумаги вместо синтетического
+   шума. Фиксированный, pointer-events: none, чтобы не мешать клику и не вызывать
+   перерисовку при скролле. Класс вешается на секцию с position: relative. */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: url('/assets_web/textures/aeterra_grain_tile.webp');
+  background-size: 320px 320px;
+  background-repeat: repeat;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  z-index: 0;
 }
 
 /* Leaflet overrides */
@@ -79,6 +140,51 @@ ul, ol {
 .leaflet-popup-content-wrapper {
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-md);
+}
+
+/* ── Подпись об источнике карты ───────────────────────────────────────
+   Убрать её нельзя: OpenStreetMap (ODbL) и CARTO требуют видимой ссылки на
+   источник — это условие использования тайлов. Поэтому делаем её тихой:
+   мелкий кегль, приглушённый цвет, полупрозрачная подложка. */
+.leaflet-control-attribution {
+  background: rgba(249, 249, 249, 0.72) !important;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: var(--radius-pill) 0 0 0;
+  padding: 2px 6px !important;
+  font-size: 10px !important;
+  line-height: 1.4;
+  color: var(--color-ink-muted);
+  white-space: nowrap;
+}
+
+.leaflet-control-attribution a {
+  color: var(--color-ink-soft);  /* вместо системного синего */
+  text-decoration: none;
+}
+.leaflet-control-attribution a:hover,
+.leaflet-control-attribution a:focus-visible {
+  text-decoration: underline;
+}
+
+/* Сворачивание в знак «©» — только там, где есть настоящее наведение.
+   На тач-экране ни :hover, ни :focus-within не наступают сами, а ссылки при
+   overflow: hidden обрезаны и не нажимаются: подпись стала бы недостижимой,
+   то есть требование лицензии перестало бы выполняться. */
+@media (hover: hover) and (pointer: fine) {
+  .leaflet-control-attribution {
+    max-width: 20px;            /* видно только «©», остальное за краем */
+    overflow: hidden;
+    transition: max-width var(--duration-slow) var(--ease-luxury);
+  }
+  .leaflet-control-attribution:hover,
+  .leaflet-control-attribution:focus-within {
+    max-width: 24rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .leaflet-control-attribution { transition: none; }
 }
 
 /* Scrollbar */

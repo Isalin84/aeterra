@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import PageHero from '../../components/ui/PageHero'
 import styles from './InnerCompass.module.css'
 
 const dontSay = [
@@ -20,23 +21,22 @@ const fadeUp = {
 export default function Standards() {
   return (
     <div className={styles.innerPage}>
+      <PageHero
+        variant="dark"
+        eyebrow="Стандарты совершенства"
+        title="Как мы говорим"
+        sub="Тон голоса, запрещённые формулировки и правила, по которым проверяется каждый текст бренда."
+        image="/assets_web/compass/aeterra_compass_standards.webp"
+        breadcrumb={
+          <>
+            <Link to="/inner-compass">Inner Compass</Link>
+            <span>/</span>
+            <span>Стандарты</span>
+          </>
+        }
+      />
+
       <div className="container">
-        <div className={styles.breadcrumb}>
-          <Link to="/inner-compass">Inner Compass</Link>
-          <span>/</span>
-          <span>Стандарты</span>
-        </div>
-
-        <motion.div
-          className={styles.innerHero}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <span className={styles.eyebrow}>Стандарты совершенства</span>
-          <h1 className={styles.innerTitle}>Как мы говорим</h1>
-        </motion.div>
-
         <div className={styles.standards}>
           <motion.div className={styles.toneBlock} {...fadeUp}>
             <h2 className={styles.toneTitle}>Тон голоса AETERRA</h2>
@@ -45,7 +45,10 @@ export default function Standards() {
             </p>
           </motion.div>
 
-          <motion.div {...fadeUp} transition={{ duration: 0.7, delay: 0.1 }}>
+          {/* Таблица прокручивается внутри своей области: на узком экране её
+              min-content шире вьюпорта, и без обёртки она тянула по горизонтали
+              всю страницу (на 278px переполнение доходило до 103px) */}
+          <motion.div className={styles.tableWrap} {...fadeUp} transition={{ duration: 0.7, delay: 0.1 }}>
             <table className={styles.table}>
               <thead>
                 <tr>

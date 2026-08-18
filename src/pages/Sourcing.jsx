@@ -1,29 +1,10 @@
-import { useState, useRef } from 'react'
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
+import { useEffect, useState } from 'react'
+import { MapContainer, TileLayer, Marker, Popup, useMap, AttributionControl } from 'react-leaflet'
 import { motion } from 'framer-motion'
+import PageHero from '../components/ui/PageHero'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import styles from './Sourcing.module.css'
-
-function SoundOffIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-      <line x1="23" y1="9" x2="17" y2="15"/>
-      <line x1="17" y1="9" x2="23" y2="15"/>
-    </svg>
-  )
-}
-
-function SoundOnIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-    </svg>
-  )
-}
 
 // 40px прозрачная зона клика вокруг видимой 12px точки — tap-таргет ≥44px по факту
 const customIcon = L.divIcon({
@@ -71,67 +52,98 @@ const sources = [
   },
 ]
 
+/* Рамка по крайним источникам: Исландия сверху, Амазония снизу,
+   Амазония слева, Алтай справа. */
+const sourceBounds = L.latLngBounds(sources.map(s => [s.lat, s.lng]))
+
+/* Границы системы координат Web Mercator. За ними плиток не существует,
+   и без этого ограничения Leaflet всё равно их запрашивал. */
+const tileBounds = L.latLngBounds([[-85.05, -180], [85.05, 180]])
+
+/**
+ * Подбирает масштаб так, чтобы карта заполняла контейнер по ширине и при этом
+ * все пять маркеров оставались в кадре.
+ *
+ * Зачем: при фиксированном zoom={2} мир занимает 1024px. На широком экране
+ * (2000px+) этого не хватало, и карта повторялась — в кадре оказывались две
+ * Северные Америки и две Австралии. Простой fitBounds решает дублирование, но
+ * упирается в высоту и оставляет пустые поля по бокам. Поэтому берём минимум из
+ * двух ограничений: масштаба, при котором мир ровно перекрывает ширину, и
+ * максимального масштаба, при котором рамка источников ещё влезает по высоте.
+ */
+function FitMapToWidth() {
+  const map = useMap()
+
+  useEffect(() => {
+    const apply = () => {
+      const { x: width } = map.getSize()
+      if (!width) return
+      const zoomFillingWidth = Math.log2(width / 256)          // 256px — сторона тайла
+      // Отступ умеренный: чем он больше, тем сильнее ограничение по высоте
+      // прижимает масштаб и тем шире поля по краям. К заданному значению
+      // добавляется ещё половина иконки маркера (40px), это учтено.
+      const zoomFittingSources = map.getBoundsZoom(sourceBounds, false, L.point(40, 44))
+      const zoom = Math.min(zoomFillingWidth, zoomFittingSources)
+
+      /* Центр берём в проекции, а не через getCenter(). Географическая середина
+         между Исландией (64.9°) и Амазонией (−3.5°) в Меркаторе не совпадает с
+         серединой картинки — широты к полюсу растягиваются, и маркер Исландии
+         вставал вплотную к верхней кромке полосы. */
+      const northWest = map.project(sourceBounds.getNorthWest(), zoom)
+      const southEast = map.project(sourceBounds.getSouthEast(), zoom)
+      const center = map.unproject(northWest.add(southEast).divideBy(2), zoom)
+
+      map.setView(center, zoom, { animate: false })
+    }
+
+    apply()
+    map.on('resize', apply)
+    return () => map.off('resize', apply)
+  }, [map])
+
+  return null
+}
+
 export default function Sourcing() {
   const [active, setActive] = useState(null)
-  const videoRef = useRef(null)
-  const [muted, setMuted] = useState(true)
 
-  const toggleSound = () => {
-    if (videoRef.current) {
-      const newMuted = !muted
-      videoRef.current.muted = newMuted
-      setMuted(newMuted)
-    }
-  }
 
   return (
     <div className={styles.page}>
-      <div className={styles.hero}>
-        <video
-          ref={videoRef}
-          className={styles.heroVideo}
-          autoPlay muted playsInline
-          src="/assets_web/video/aeterra_video_map_sourcing.mp4"
-        />
-        <div className={styles.heroOverlay} />
-        <button className={styles.soundBtn} onClick={toggleSound} aria-label={muted ? 'Включить звук' : 'Выключить звук'}>
-          {muted ? <SoundOffIcon /> : <SoundOnIcon />}
-        </button>
-        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-          <motion.span
-            className={styles.eyebrow}
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            Поставки
-          </motion.span>
-          <motion.h1
-            className={`${styles.title} ${styles.titleLight}`}
-            initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-          >
-            Откуда мы берём
-          </motion.h1>
-          <motion.p
-            className={`${styles.sub} ${styles.subLight}`}
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            transition={{ duration: 0.7, delay: 0.5 }}
-          >
-            Каждый ингредиент — с конкретным адресом. Нажмите на регион, чтобы узнать историю.
-          </motion.p>
-        </div>
-      </div>
+      <PageHero
+        variant="cinematic"
+        eyebrow="Поставки"
+        title="Откуда мы берём"
+        sub="Каждый ингредиент — с конкретным адресом. Нажмите на регион, чтобы узнать историю."
+        video="/assets_web/video/aeterra_video_map_sourcing.mp4"
+        poster="/assets_web/video/posters/aeterra_video_map_sourcing.webp"
+        ariaLabel="Источники ингредиентов AETERRA"
+        sound
+      />
 
       <div className={styles.mapWrap}>
         <MapContainer
-          center={[20, 10]}
+          /* Стартовые center/zoom нужны Leaflet для инициализации,
+             дальше масштаб пересчитывает FitMapToWidth под ширину окна */
+          center={sourceBounds.getCenter()}
           zoom={2}
+          zoomSnap={0}
           className={styles.map}
           zoomControl={false}
+          /* Свой контрол атрибуции: у стандартного в подписи стоит промо-префикс
+             самого Leaflet с флажком, к лицензии он отношения не имеет */
+          attributionControl={false}
         >
+          <FitMapToWidth />
+          <AttributionControl prefix={false} position="bottomright" />
           <TileLayer
             url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            /* noWrap убирает дубли мира по горизонтали, но сам по себе не мешает
+               запрашивать плитки за пределами системы координат: половина
+               запросов уходила в 404. bounds ограничивает набор плиток. */
+            noWrap
+            bounds={tileBounds}
           />
           {sources.map(s => (
             <Marker
@@ -159,7 +171,7 @@ export default function Sourcing() {
             transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
           >
             <div className={styles.detailImg}>
-              <img src={active.image} alt={active.label} />
+              <img src={active.image} alt={active.label} loading="lazy" decoding="async" />
             </div>
             <div className={styles.detailInfo}>
               <button className={styles.backBtn} onClick={() => setActive(null)}>

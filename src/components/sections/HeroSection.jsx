@@ -1,17 +1,21 @@
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import AmbientVideo from '../ui/AmbientVideo'
 import styles from './HeroSection.module.css'
 
 export default function HeroSection() {
   return (
-    <section className={styles.hero}>
-      <video
+    /* data-hero — признак для хедера: поверх полноэкранного видео он переходит
+       в светлый прозрачный вариант. Признак живёт в разметке, а не в списке
+       маршрутов внутри хедера, поэтому разъехаться с вёрсткой не может. */
+    <section className={styles.hero} data-hero="cinematic">
+      {/* Первый экран — единственное место с повтором: он без звука и должен
+          жить постоянно. Шапки подстраниц играют один раз (см. AmbientVideo). */}
+      <AmbientVideo
         className={styles.video}
         src="/assets_web/video/aeterra_hero_video.mp4"
-        autoPlay
-        muted
+        poster="/assets_web/video/posters/aeterra_hero_video.webp"
         loop
-        playsInline
       />
       <div className={styles.overlay} />
 
@@ -49,7 +53,12 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          <Link to="/shop" className={styles.cta}>Открыть коллекцию</Link>
+          <Link to="/shop" className={styles.cta}>
+            Открыть коллекцию
+            <svg className={styles.ctaArrow} width="16" height="8" viewBox="0 0 16 8" fill="none" aria-hidden="true">
+              <path d="M0 4h14M11 1l3 3-3 3" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </Link>
         </motion.div>
       </div>
 

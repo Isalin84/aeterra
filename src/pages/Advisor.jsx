@@ -137,8 +137,7 @@ export default function Advisor() {
             <motion.div key="intro" className={styles.intro} {...fadeUp}>
               <img
                 src="/assets_web/avatar/aeterra_avatar_ana.webp"
-                alt="Ана" className={styles.avatar}
-              />
+                alt="Ана" className={styles.avatar} loading="lazy" decoding="async" />
               <span className={styles.eyebrow}>AI Advisor</span>
               <h1 className={styles.title}>Ваш персональный ритуал</h1>
               <p className={styles.sub}>
@@ -222,7 +221,7 @@ export default function Advisor() {
                     transition={{ delay: i * 0.15 + 0.3 }}
                   >
                     <div className={styles.resultImg}>
-                      <img src={`/${p.cardImage}`} alt={p.name} />
+                      <img src={`/${p.cardImage}`} alt={p.name} loading="lazy" decoding="async" />
                     </div>
                     <div className={styles.resultInfo}>
                       <h3 className={styles.resultName}>{p.name}</h3>
@@ -257,6 +256,8 @@ export default function Advisor() {
               ref={cornerVideoRef}
               className={styles.cornerVideo}
               autoPlay muted playsInline
+              preload="metadata"
+              poster="/assets_web/video/posters/aeterra_video_advisor_intro.webp"
               src="/assets_web/video/aeterra_video_advisor_intro.mp4"
               onEnded={() => setVideoEnded(true)}
             />

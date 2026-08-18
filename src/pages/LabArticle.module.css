@@ -1,5 +1,5 @@
 .page {
-  padding-top: calc(72px + var(--space-5));
+  padding-top: var(--page-top);
   padding-bottom: var(--space-8);
 }
 
@@ -7,7 +7,7 @@
   overflow: hidden;
   margin-bottom: var(--space-6);
   margin-top: calc(var(--space-5) * -1);
-  border-radius: 16px;
+  border-radius: var(--radius-lg);
 }
 
 .heroImg img {
@@ -46,7 +46,7 @@
 .title {
   font-family: var(--font-serif);
   font-size: var(--text-3xl);
-  font-weight: 300;
+  font-weight: var(--weight-display);
   color: var(--color-ink);
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight);
@@ -91,7 +91,7 @@
 .moreTitle {
   font-family: var(--font-serif);
   font-size: var(--text-xl);
-  font-weight: 300;
+  font-weight: var(--weight-heading);
   color: var(--color-ink);
   margin-bottom: var(--space-4);
 }
